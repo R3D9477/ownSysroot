@@ -1,0 +1,2 @@
+setenv video "video=mxcfb0:dev=hdmi,1024x768M@60,if=RGB24,bpp=32"
+saveenv
