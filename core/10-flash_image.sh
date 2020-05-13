@@ -105,6 +105,8 @@ if ! [ -z "${DEV_FSTAB_MMC_PREFIX}" ] ; then
 
         if [ "${DEV_STORAGE_OTG}" == "y" ] ; then
 
+            OTG_DEVICE="/dev/${DEV_FSTAB_MMC_PREFIX}3"
+
             preAuthRoot && echo "options g_mass_storage removable=y ro=0 stall=0" | sudo tee "${SYSROOT}/etc/modprobe.d/g_mass_storage.conf"
 
             if [ -z "$(cat ${SYSROOT}/etc/modules | grep g_mass_storage)" ] ; then
@@ -112,20 +114,29 @@ if ! [ -z "${DEV_FSTAB_MMC_PREFIX}" ] ; then
             fi
 
             preAuthRoot && echo "#!/bin/bash
-if pushd \$(realpath /sys/devices/soc*/soc*/2100000.aips-bus/2184000.usb/ci_hdrc.0/gadget) ; then
-    OTG_DEVICE=\$(mount | grep ${DEV_STORAGE_MNT} | awk '{print \$1}')
-    while true ; do
-        if ! [ -z \"\$(dmesg -c | grep g_mass_storage)\" ] ; then
-            if [ -f 'lun0/file' ] ; then
-                if [ -z \"\$(cat 'lun0/file' | grep \${OTG_DEVICE})\" ] ; then
-                    echo \"\${OTG_DEVICE}\" > 'lun0/file'
-                fi
-            fi
-        fi
-        sleep 3s
-    done
-    popd
-fi" | sudo tee "${SYSROOT}/opt/otg_auto_insert.sh"
+OTG_STAT=\$(realpath /sys/class/udc/ci_hdrc.0/state)
+OTG_FILE=\$(realpath /sys/devices/soc*/soc/2100000.aips-bus/2184000.usb/ci_hdrc.0/gadget/lun0/file)
+while ( [ -f \"\${OTG_STAT}\" ] && [ -f \"\${OTG_FILE}\" ] ) ; do
+    DMESG=\"\$(dmesg -c | grep g_mass_storage)\"
+    if ( ! [ -z \"\${DMESG}\" ] && [ \"\$(cat \${OTG_STAT})\" == \"configured\" ] ) ; then
+        pkill \"${DEV_STORAGE_MNT}\"
+        umount \"${DEV_STORAGE_MNT}\"
+        rm -rf \"${DEV_STORAGE_MNT}\"
+        sleep 1s ; sync
+        echo \"${OTG_DEVICE}\" > \"\${OTG_FILE}\"
+    elif ( [ \"\$(cat \${OTG_STAT})\" != \"configured\" ] && [ -z \"\$(mount | grep ${OTG_DEVICE})\" ] ) ; then
+        echo \"\" > \"\${OTG_FILE}\"
+        sleep 1s ; sync
+        pkill \"${DEV_STORAGE_MNT}\"
+        rm -rf \"${DEV_STORAGE_MNT}\"
+        mkdir -p \"${DEV_STORAGE_MNT}\"
+        MNT_FS=\"\$(cat /etc/fstab  | grep ${OTG_DEVICE} | awk '{print \$3}')\"
+        MNT_OPT=\"\$(cat /etc/fstab | grep ${OTG_DEVICE} | awk '{print \$4}')\"
+        mount -t \"\${MNT_FS}\" -o \"\${MNT_OPT}\" \"${OTG_DEVICE}\" \"${DEV_STORAGE_MNT}\"
+    fi
+    sleep 1s
+done
+exit 1" | sudo tee "${SYSROOT}/opt/otg_auto_insert.sh"
 
             preAuthRoot && sudo chroot "${SYSROOT}" chmod +x "/opt/otg_auto_insert.sh"
 
