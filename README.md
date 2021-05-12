@@ -1,7 +1,7 @@
 # ownSysroot
 System for sysroot building written on pure Bash.
 
-#### build_OpenRex_Full.sh:
+### build_OpenRex_Full.sh:
 * script for automated building of Debian-based sysroot for OprenRex board (based on i.mx6 SoC)
     * configs:
         * users_files/configure_autologin.sh - configure autologin
