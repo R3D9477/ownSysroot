@@ -1,7 +1,7 @@
 # imx6deb
 Debian-based sysroot for imx6
 
-# build_OpenRex_Full.sh:
+## build_OpenRex_Full.sh:
 * script for automated building of Debian-based sysroot for OprenRex board (based on i.mx6 SoC)
     * configs:
         * users_files/configure_autologin.sh - configure autologin
