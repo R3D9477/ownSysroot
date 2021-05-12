@@ -1,44 +1,48 @@
 #!/bin/bash
 
-if [ -z "${UBOOT_GITURL}" ]; then export UBOOT_URL="https://github.com/Freescale/u-boot-fslc.git" ; fi
-if [ -z "${UBOOT_BRANCH}" ]; then export UBOOT_BRANCH="2018.09+fscl" ; fi
+exportdefvar UBOOT_GITURL       ""
+exportdefvar UBOOT_GITREPO      ""
+exportdefvar UBOOT_BRANCH       ""
+exportdefvar UBOOT_PRECOMPILE   ""
+exportdefvar UBOOT_RECOMPILE    ""
+exportdefvar UBOOT_CLEAN        ""
 
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-if ! pushd "$CACHE" ; then exit 1 ; fi
+show_current_task
 
-    if ! [ -d "u-boot-${UBOOT_BRANCH}" ] ; then
-        if [ -f "u-boot-${UBOOT_BRANCH}.tar" ]; then
-            if ! ( tar -xf "u-boot-${UBOOT_BRANCH}.tar" ) ; then exit 2 ; fi
-        else
-            if git clone -b "${UBOOT_BRANCH}" --single-branch "${UBOOT_GITURL}" "u-boot-${UBOOT_BRANCH}" ; then
-                tar -cf "u-boot-${UBOOT_BRANCH}.tar" "u-boot-${UBOOT_BRANCH}"
-            else
-                exit 2
-            fi
-        fi
-    fi
+show_message                                    \
+    "UBOOT_GITURL     : ${UBOOT_GITURL}"        \
+    "UBOOT_GITREPO    : ${UBOOT_GITREPO}"       \
+    "UBOOT_BRANCH     : ${UBOOT_BRANCH}"        \
+    "UBOOT_PRECOMPILE : ${UBOOT_PRECOMPILE}"    \
+    "UBOOT_RECOMPILE  : ${UBOOT_RECOMPILE}"     \
+    "UBOOT_CLEAN      : ${UBOOT_CLEAN}"
 
-    #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+show_message_counter "    continue in:"
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+
+if ! ( get_git_pkg "${UBOOT_GITURL}" "${UBOOT_GITREPO}" "${UBOOT_BRANCH}" ) ; then goto_exit 1 ; fi
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+
+if ! pushd "${CACHE}" ; then goto_exit 2 ; fi
 
     pushd "${USERDIR}"
         if ! [ -z "${UBOOT_PRECOMPILE}" ] ; then
-            if ! ( eval ${UBOOT_PRECOMPILE} ) ; then exit 3 ; fi
+            if ! ( eval ${UBOOT_PRECOMPILE} ) ; then goto_exit 3 ; fi
         fi
     popd
 
-    #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    if ! pushd "${UBOOT_GITREPO}-${UBOOT_BRANCH}" ; then goto_exit 4 ; fi
 
-    if ! pushd "u-boot-${UBOOT_BRANCH}" ; then exit 4 ; fi
+        if ( [ "${UBOOT_RECOMPILE}" == "y" ] || ! ( [ -f "SPL" ] || [ -f "u-boot.imx" ] || [ -f "u-boot.img" ] ) ) ; then
 
-        if ( [ "${UBOOT_RECOMPILE}" == "y" ] || ( [ "${UBOOT_RECOMPILE}" == "a" ] && ( ! [ -f "SPL" ] && ! [ -f "u-boot.imx" ] && ! [ -f "u-boot.img" ] ) ) ) ; then
+            if [ "${UBOOT_CLEAN}" != "n" ] ; then make clean ; fi
 
-            if [ "${UBOOT_CLEAN}" == "y" ] ; then
-                make clean
-            fi
-
-            if ! make ARCH=${ARCH} CROSS_COMPILE="${TOOLCHAIN_PREFIX}" ${NJ} ${UBOOT_CONFIG} ; then exit 5 ; fi
-            if ! make ARCH=${ARCH} CROSS_COMPILE="${TOOLCHAIN_PREFIX}" ${NJ} ; then exit 6 ; fi
+            if ! ( make ARCH=${ARCH} CROSS_COMPILE="${TOOLCHAIN_PREFIX}" ${NJ} ${UBOOT_CONFIG} ) ; then goto_exit 5 ; fi
+            if ! ( make ARCH=${ARCH} CROSS_COMPILE="${TOOLCHAIN_PREFIX}" ${NJ} ) ; then goto_exit 6 ; fi
         fi
     popd
 

@@ -1,121 +1,157 @@
 #!/bin/bash
 
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-# BURN IMAGE
+exportdefvar IMG_BOOT                   ""
+exportdefvar HOST_MMC_BOOT              ""
 
-preAuthRoot ; dd if="${IMG_NAME}" bs=32M | pv -s $(wc -c < "${IMG_NAME}") | sudo dd of="${HOST_MMC}" bs=32M
-sleep 3s ; sync
+exportdefvar IMG_SYSROOT                "${IMG_NAME}"
+exportdefvar HOST_MMC_SYSROOT           "${HOST_MMC}"
 
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-# MAKE STORAGE IN A FREE SPACE
+exportdefvar DEV_MAKE_STORAGE           y
+exportdefvar DEV_FSTAB_MMC_PREFIX       "sda"
 
-if [ -z "${DEV_STORAGE_FS}"  ] ; then exit 0 ; fi
-if [ -z "${DEV_STORAGE_LBL}" ] ; then export DEV_STORAGE_LBL="STORAGE" ; fi
-if [ -z "${DEV_STORAGE_MNT}" ] ; then export DEV_STORAGE_MNT="/mnt/storage" ; fi
-if [ -z "${DEV_STORAGE_OTG}" ] ; then export DEV_STORAGE_OTG="y" ; fi
+exportdefvar DEV_STORAGE_FS             "exfat"
+exportdefvar DEV_STORAGE_LBL            "STORAGE"
+exportdefvar DEV_STORAGE_MNT            "/mnt/storage"
 
-preAuthRoot && sudo wipefs --force --all "${HOST_MMC}3"
-sleep 3s ; sync
+exportdefvar DEV_USBOTG_STATEF          "/sys/class/udc/ci_hdrc.0/state"
+exportdefvar DEV_USBOTG_LUNF            "/sys/devices/soc*/soc/2100000.aips-bus/2184000.usb/ci_hdrc.0/gadget/lun0/file"
+exportdefvar DEV_USBOTG                 y
+exportdefvar DEV_USBOTG_AUTOINS         n
 
-preAuthRoot && sudo sfdisk --force --delete "${HOST_MMC}" 3
-sleep 3s ; sync
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+# BURN IMAGE --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-preAuthRoot && echo ",$(sudo sfdisk -s ${HOST_MMC})" | sudo sfdisk --force --append "${HOST_MMC}" --no-reread
-sleep 3s ; sync
+show_message "$(basename $0)"
+
+sync_fs
+
+if ( [ "${IMG_BOOT}" ] && [ "${HOST_MMC_BOOT}" ] ) ; then
+
+    show_message "BURN BOOT: ${IMG_BOOT} -> ${HOST_MMC_BOOT}"
+
+    preAuthRoot ; dd if="${IMG_BOOT}" | pv -s $(wc -c < "${IMG_BOOT}") | sudo dd of="${HOST_MMC_BOOT}"
+    sync_fs
+fi
+
+show_message "BURN SYSROOT: ${IMG_SYSROOT} -> ${HOST_MMC_SYSROOT}"
+
+preAuthRoot ; dd if="${IMG_SYSROOT}" bs=32M | pv -s $(wc -c < "${IMG_SYSROOT}") | sudo dd of="${HOST_MMC_SYSROOT}" bs=32M
+sync_fs
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+# MAKE STORAGE IN A FREE SPACE --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ----
+
+if [ "${DEV_MAKE_STORAGE}" != "y" ] ; then exit 0 ; fi
+
+if [[ "${HOST_MMC_SYSROOT}" =~ "mmcblk" ]]
+    then export HOST_MMC_SYSROOT_p="${HOST_MMC_SYSROOT}p"
+    else export HOST_MMC_SYSROOT_p="${HOST_MMC_SYSROOT}"
+fi
+
+preAuthRoot && sudo wipefs --force --all "${HOST_MMC_SYSROOT_p}3"
+sync_fs
+
+preAuthRoot && sudo sfdisk --force --delete "${HOST_MMC_SYSROOT}" 3
+sync_fs
+
+preAuthRoot && echo ",$(sudo sfdisk -s ${HOST_MMC_SYSROOT})" | sudo sfdisk --force --append "${HOST_MMC_SYSROOT}" --no-reread
+sync_fs
 
 if [ "${DEV_STORAGE_FS}" == "ext4" ] ; then
 
-    if ! ( preAuthRoot && sudo mkfs.ext4 "${HOST_MMC}3" ) ; then exit 2 ; fi
-    sleep 3s ; sync
+    if ! ( preAuthRoot && sudo mkfs.ext4 "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 2 ; fi
+    sync_fs
 
-    if ! ( preAuthRoot && sudo e2label "${HOST_MMC}3" "${DEV_STORAGE_LBL}" ) ; then exit 2 ; fi
-    sleep 3s ; sync
+    if ! ( preAuthRoot && sudo e2label "${HOST_MMC_SYSROOT_p}3" "${DEV_STORAGE_LBL}" ) ; then goto_exit 2 ; fi
+    sync_fs
 
-    if ! ( preAuthRoot && sudo fsck.ext4 -a -w -v "${HOST_MMC}3" ) ; then exit 2 ; fi
+    if ! ( preAuthRoot && sudo fsck.ext4 -a -w -v "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 2 ; fi
 
     FSTAB_STORAGE_FS="ext4 defaults 0 0"
 
 elif [ "${DEV_STORAGE_FS}" == "exfat" ] ; then
 
-    if ! ( preAuthRoot && sudo mkfs.exfat "${HOST_MMC}3" ) ; then exit 2 ; fi
-    sleep 3s ; sync
+    if ! ( preAuthRoot && sudo mkfs.exfat "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 2 ; fi
+    sync_fs
 
-    if ! ( preAuthRoot && sudo exfatlabel "${HOST_MMC}3" "${DEV_STORAGE_LBL}" ) ; then exit 2 ; fi
-    sleep 3s ; sync
+    if ! ( preAuthRoot && sudo exfatlabel "${HOST_MMC_SYSROOT_p}3" "${DEV_STORAGE_LBL}" ) ; then goto_exit 2 ; fi
+    sync_fs
 
-    if ! ( preAuthRoot && sudo fsck.exfat "${HOST_MMC}3" ) ; then exit 2 ; fi
+    if ! ( preAuthRoot && sudo fsck.exfat "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 2 ; fi
 
     FSTAB_STORAGE_FS="exfat-fuse defaults 0 0"
 
 elif [ "${DEV_STORAGE_FS}" == "fat32" ] ; then
 
-    if ! ( preAuthRoot && sudo mkfs.fat -F32 "${HOST_MMC}3" ) ; then exit 2 ; fi
-    sleep 3s ; sync
+    if ! ( preAuthRoot && sudo mkfs.fat -F32 "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 2 ; fi
+    sync_fs
 
-    if ! ( preAuthRoot && sudo fatlabel "${HOST_MMC}3" "${DEV_STORAGE_LBL}" ) ; then exit 2 ; fi
-    sleep 3s ; sync
+    if ! ( preAuthRoot && sudo fatlabel "${HOST_MMC_SYSROOT_p}3" "${DEV_STORAGE_LBL}" ) ; then goto_exit 2 ; fi
+    sync_fs
 
-    if ! ( preAuthRoot && sudo fsck.fat -a -w -v "${HOST_MMC}3" ) ; then exit 2 ; fi
+    if ! ( preAuthRoot && sudo fsck.fat -a -w -v "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 2 ; fi
 
     FSTAB_STORAGE_FS="vfat defaults 0 0"
 
 else
 
-    echo ""
-    echo ">>> UNKNOWN STORAGE FILESYSTEM: ${DEV_STORAGE_FS}"
-    echo ""
+    show_message "UNKNOWN STORAGE FILESYSTEM: ${DEV_STORAGE_FS}"
 
-    exit 2
+    goto_exit 2
 fi
 
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 if ! [ -z "${DEV_FSTAB_MMC_PREFIX}" ] ; then
 
     preAuthRoot
-    BOOT_UUID=$(sudo blkid -s UUID -o value "${HOST_MMC}1")
-    SYSROOT_UUID=$(sudo blkid -s UUID -o value "${HOST_MMC}2")
-    STORAGE_UUID=$(sudo blkid -s UUID -o value "${HOST_MMC}3")
 
-    if ( [ -z "${BOOT_UUID}" ] || [ -z "${SYSROOT_UUID}" ] || [ -z "${STORAGE_UUID}" ] ) ; then exit 3 ; fi
+       BOOT_UUID=$(sudo blkid -s UUID -o value "${HOST_MMC_SYSROOT_p}1")
+    SYSROOT_UUID=$(sudo blkid -s UUID -o value "${HOST_MMC_SYSROOT_p}2")
+    STORAGE_UUID=$(sudo blkid -s UUID -o value "${HOST_MMC_SYSROOT_p}3")
 
-    if ! ( preAuthRoot && sudo mount "${HOST_MMC}2" "${SYSROOT}" ) ; then exit 4 ; fi
+    if ( [ -z "${BOOT_UUID}" ] || [ -z "${SYSROOT_UUID}" ] || [ -z "${STORAGE_UUID}" ] ) ; then goto_exit 3 ; fi
 
-        # --- SET FSTAB --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    preAuthRoot && sudo mkdir -p "${SYSROOT}"
+    if ! ( preAuthRoot && sudo mount "${HOST_MMC_SYSROOT_p}2" "${SYSROOT}" ) ; then goto_exit 4 ; fi
 
-        if ! ( preAuthRoot && sudo mkdir -p "${SYSROOT}/boot/efi" ) ; then exit 5 ; fi
-        if ! ( preAuthRoot && sudo mkdir -p "${SYSROOT}${DEV_STORAGE_MNT}" ) ; then exit 6 ; fi
+        # SET FSTAB
 
-        if [ -z "${DEV_FSTAB_MMC_PREFIX}" ] ; then preAuthRoot && echo "UUID=${BOOT_UUID} /boot/efi vfat umask=0077 0 1" | sudo tee "${SYSROOT}/etc/fstab"
-        else preAuthRoot && echo "/dev/${DEV_FSTAB_MMC_PREFIX}1 /boot/efi vfat umask=0077 0 1" | sudo tee "${SYSROOT}/etc/fstab"
+        if ! ( preAuthRoot && sudo mkdir -p "${SYSROOT}/boot/efi" ) ; then goto_exit 5 ; fi
+        if ! ( preAuthRoot && sudo mkdir -p "${SYSROOT}${DEV_STORAGE_MNT}" ) ; then goto_exit 6 ; fi
+
+        if [ -z "${DEV_FSTAB_MMC_PREFIX}" ]
+            then preAuthRoot && echo "UUID=${BOOT_UUID} /boot/efi vfat umask=0077 0 1" | sudo tee "${SYSROOT}/etc/fstab"
+            else preAuthRoot && echo "/dev/${DEV_FSTAB_MMC_PREFIX}1 /boot/efi vfat umask=0077 0 1" | sudo tee "${SYSROOT}/etc/fstab"
         fi
 
-        if [ -z "${DEV_FSTAB_MMC_PREFIX}" ] ; then preAuthRoot && echo "UUID=${SYSROOT_UUID} / ext4 errors=remount-ro 0 1" | sudo tee -a "${SYSROOT}/etc/fstab"
-        else preAuthRoot && echo "/dev/${DEV_FSTAB_MMC_PREFIX}2 / ext4 errors=remount-ro 0 1" | sudo tee -a "${SYSROOT}/etc/fstab"
+        if [ -z "${DEV_FSTAB_MMC_PREFIX}" ]
+            then preAuthRoot && echo "UUID=${SYSROOT_UUID} / ext4 noatime,errors=remount-ro 0 1" | sudo tee -a "${SYSROOT}/etc/fstab"
+            else preAuthRoot && echo "/dev/${DEV_FSTAB_MMC_PREFIX}2 / ext4 errors=remount-ro 0 1" | sudo tee -a "${SYSROOT}/etc/fstab"
         fi
 
-        if [ -z "${DEV_FSTAB_MMC_PREFIX}" ] ; then preAuthRoot && echo "UUID=${STORAGE_UUID} ${DEV_STORAGE_MNT} ${FSTAB_STORAGE_FS}" | sudo tee -a "${SYSROOT}/etc/fstab"
-        else preAuthRoot && echo "/dev/${DEV_FSTAB_MMC_PREFIX}3 ${DEV_STORAGE_MNT} ${FSTAB_STORAGE_FS}" | sudo tee -a "${SYSROOT}/etc/fstab"
+        if [ -z "${DEV_FSTAB_MMC_PREFIX}" ]
+            then preAuthRoot && echo "UUID=${STORAGE_UUID} ${DEV_STORAGE_MNT} ${FSTAB_STORAGE_FS}" | sudo tee -a "${SYSROOT}/etc/fstab"
+            else preAuthRoot && echo "/dev/${DEV_FSTAB_MMC_PREFIX}3 ${DEV_STORAGE_MNT} ${FSTAB_STORAGE_FS}" | sudo tee -a "${SYSROOT}/etc/fstab"
         fi
 
-        # --- SET USB-OTG --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
+        # SET USB-OTG
 
-        if [ "${DEV_STORAGE_OTG}" == "y" ] ; then
+        if [[ "${DEV_USBOTG}" == "y" ]] ; then
 
             OTG_DEVICE="/dev/${DEV_FSTAB_MMC_PREFIX}3"
 
-            preAuthRoot && echo "options g_mass_storage removable=y ro=0 stall=0" | sudo tee "${SYSROOT}/etc/modprobe.d/g_mass_storage.conf"
-
-            if [ -z "$(cat ${SYSROOT}/etc/modules | grep g_mass_storage)" ] ; then
-                preAuthRoot && echo "g_mass_storage" | sudo tee "${SYSROOT}/etc/modules"
+            if [ -z "$(cat ${SYSROOT}/etc/modules | grep g_mass_storage)" ]
+                then preAuthRoot && echo "g_mass_storage" | sudo tee -a "${SYSROOT}/etc/modules"
             fi
 
-            preAuthRoot && echo "#!/bin/bash
-OTG_STAT=\$(realpath /sys/class/udc/ci_hdrc.0/state)
-OTG_FILE=\$(realpath /sys/devices/soc*/soc/2100000.aips-bus/2184000.usb/ci_hdrc.0/gadget/lun0/file)
+            preAuthRoot && echo "options g_mass_storage removable=y ro=0 stall=0" | sudo tee "${SYSROOT}/etc/modprobe.d/g_mass_storage.conf"
+
+            if [ "${DEV_USBOTG_AUTOINS}" == y ] ; then
+
+                preAuthRoot && echo "#!/bin/bash
+OTG_STAT=\$(realpath ${DEV_USBOTG_STATEF})
+OTG_FILE=\$(realpath ${DEV_USBOTG_LUNF})
 while ( [ -f \"\${OTG_STAT}\" ] && [ -f \"\${OTG_FILE}\" ] ) ; do
     DMESG=\"\$(dmesg -c | grep g_mass_storage)\"
     if ( ! [ -z \"\${DMESG}\" ] && [ \"\$(cat \${OTG_STAT})\" == \"configured\" ] ) ; then
@@ -138,21 +174,35 @@ while ( [ -f \"\${OTG_STAT}\" ] && [ -f \"\${OTG_FILE}\" ] ) ; do
 done
 exit 1" | sudo tee "${SYSROOT}/opt/otg_auto_insert.sh"
 
-            preAuthRoot && sudo chroot "${SYSROOT}" chmod +x "/opt/otg_auto_insert.sh"
+                preAuthRoot && sudo chroot "${SYSROOT}" chmod +x "/opt/otg_auto_insert.sh"
 
-            preAuthRoot && echo "[Unit]
+                preAuthRoot && echo "[Unit]
 Description=USB-OTG auto insert
 [Service]
 ExecStart=/opt/otg_auto_insert.sh
 [Install]
 WantedBy=default.target" | sudo tee "${SYSROOT}/etc/systemd/system/otg_auto_insert.service"
 
-            preAuthRoot && sudo chroot "${SYSROOT}" systemctl enable otg_auto_insert
+                preAuthRoot && sudo chroot "${SYSROOT}" systemctl enable otg_auto_insert
+            fi
         fi
 
-        # --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
+    sync_fs
 
-    sleep 3s ; sync
+    #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+
+    pushd "${USERDIR}"
+        if ! [ -z "${DEV_POSTCONFIG}" ] ; then
+            if ! [ -f "${DEV_POSTCONFIG}" ] ; then goto_exit 7 ; fi
+            pushd $(dirname "${DEV_POSTCONFIG}")
+                if ! ( eval ./$(basename "${DEV_POSTCONFIG}") ) ; then goto_exit 8 ; fi
+            popd
+        fi
+    popd
+
+    #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+
+    sync_fs
 
     preAuthRoot && sudo umount "${SYSROOT}"
 
