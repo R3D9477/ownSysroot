@@ -29,7 +29,7 @@ exportdefvar UBOOT_GITURL               "https://github.com/voipac"
 exportdefvar UBOOT_GITREPO              "uboot-imx"
 exportdefvar UBOOT_BRANCH               "uboot-imx-v2015.04"
 exportdefvar UBOOT_CONFIG               "mx6tinyrexbasic_config"
-exportdefvar UBOOT_PRECOMPILE           "MCP1/mcp1-uboot-rex/install.sh"
+exportdefvar UBOOT_PRECOMPILE           ""
 exportdefvar UBOOT_RECOMPILE            n
 exportdefvar UBOOT_CLEAN                n
 exportdefvar UBOOT_POSTINSTALL          "uboot-config/uboot_postinstall.sh"
@@ -39,7 +39,7 @@ exportdefvar KERNEL_GITREPO             "linux-fslc"
 exportdefvar KERNEL_BRANCH              "4.1-2.0.x-imx-rex"
 exportdefvar KERNEL_CONFIG              "imx_v7_defconfig"
 exportdefvar KERNEL_DTB                 "imx6-tinyrexbasic.dtb"
-exportdefvar KERNEL_PRECOMPILE          "MCP1/mcp1-kernel-tinyrex/install.sh"
+exportdefvar KERNEL_PRECOMPILE          ""
 exportdefvar KERNEL_RECOMPILE           n
 exportdefvar KERNEL_CLEAN               n
 
