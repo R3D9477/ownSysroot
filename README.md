@@ -6,7 +6,7 @@ System for sysroot building written on pure Bash.
     * configs:
         * users_files/configure_autologin.sh - configure autologin
         * users_files/configure_disable_eth.sh - configure to disable ethernet
-        * users_files/configure_systemd_bootsplash.sh - set a custom logo (system-based method)
+        * users_files/configure_systemd_bootsplash.sh - set a custom logo
     * i.mx6:
         * imx/install_imx_gpu.sh - install GPU support on i.mx6-based SoM (cross-compilation)
         * imx/install_imx_vpu_cc.sh - install VPU support on i.mx6 on i.mx6-based SoM (cross-compilation)
