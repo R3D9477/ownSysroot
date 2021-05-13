@@ -4,9 +4,9 @@ System for sysroot building written on pure Bash.
 ### build_OpenRex_Full.sh:
 * script for automated building of Debian-based sysroot for OprenRex board (based on i.mx6 SoC)
     * configs:
-        * users_files/configure_autologin.sh - configure autologin
-        * users_files/configure_disable_eth.sh - configure to disable ethernet
-        * users_files/configure_systemd_bootsplash.sh - set a custom logo
+        * users_files/configure_autologin.sh - configure autologin (shell)
+        * users_files/configure_disable_eth.sh - configure to disable ethernet (shell)
+        * users_files/configure_systemd_bootsplash.sh - set a custom logo (shell)
     * i.mx6:
         * imx/install_imx_gpu.sh - install GPU support on i.mx6-based SoM (cross-compilation)
         * imx/install_imx_vpu_cc.sh - install VPU support on i.mx6 on i.mx6-based SoM (cross-compilation)
@@ -20,7 +20,7 @@ System for sysroot building written on pure Bash.
         * users_files/install_rtl8188eu.sh - install Realtek drvier (cross-compilation)
     * services:
         * users_files/install_ftpserver.sh - install and configure FTP server with anonymous access (bin-pkg)
-        * users_files/install_wifiap.sh - install WiFi Access point (bin-pkg, sh)
+        * users_files/install_wifiap.sh - install WiFi Access point (bin-pkg, shell)
     * Qt:
         * users_files/install_Qt.sh - install Qt libs (cross-compilation)
             * Qt Core
