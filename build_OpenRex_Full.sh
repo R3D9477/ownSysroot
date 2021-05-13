@@ -7,19 +7,19 @@ source "core/00-func.sh"
 
     # BASE SETTINGS
 
-exportdefvar CACHE                      "$HOME/mcp1-dev/cache"
-exportdefvar MOUNT                      "$HOME/mcp1-dev/mount"
-exportdefvar IMGDIR                     "$HOME/mcp1-dev/image"
+exportdefvar CACHE                      "$HOME/ownSysroot-dev/cache"
+exportdefvar MOUNT                      "$HOME/ownSysroot-dev/mount"
+exportdefvar IMGDIR                     "$HOME/ownSysroot-dev/image"
 
 exportdefvar REMOVE_IMG                 y
 exportdefvar FLASH_IMG                  y
 
 exportdefvar HOST_PASS                  ""
-exportdefvar DEV_PASS                   "imx6deb"
-exportdefvar DEV_HOSTNAME               "imx6deb"
+exportdefvar DEV_PASS                   "ownSysroot"
+exportdefvar DEV_HOSTNAME               "ownSysroot"
 
 exportdefvar IMG_SIZE_MB                3500
-exportdefvar IMG_NAME                   "imx6deb-openrex.img"
+exportdefvar IMG_NAME                   "ownSysroot-openrex.img"
 exportdefvar IMG_FMT_ON_MNT             y
 
 exportdefvar TC_URL                     "https://releases.linaro.org/components/toolchain/binaries/latest-5/arm-linux-gnueabihf/gcc-linaro-5.5.0-2017.10-x86_64_arm-linux-gnueabihf.tar.xz"
