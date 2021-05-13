@@ -19,15 +19,15 @@ System for sysroot building written on pure Bash.
     * drivers:
         * users_files/install_rtl8188eu.sh - install Realtek drvier (cross-compilation)
     * services:
-        * users_files/install_ftpserver.sh - install and configure FTP server with anonymous access
-        * users_files/install_wifiap.sh - install WiFi Access point
+        * users_files/install_ftpserver.sh - install and configure FTP server with anonymous access (bin-pkg)
+        * users_files/install_wifiap.sh - install WiFi Access point (bin-pkg, sh)
     * Qt:
         * users_files/install_Qt.sh - install Qt libs (cross-compilation)
             * Qt Core
             * Qt Quick2
             * Qt Multimedia
             * Qt SerialPort
-        * users_files/install_QtApp.sh - install user's custom application
+        * users_files/install_QtApp.sh - install user's custom application (cross-compilation)
     * Other:
         * users_files/install_spi-test.sh - install application 'spitest' (cross-compilation)
         * users_files/install_avrdude.sh - install application 'avrdude' (cross-compilation)
