@@ -28,7 +28,7 @@ exportdefvar GENERATE_MESON_INI         y
 exportdefvar UBOOT_GITURL               "https://github.com/voipac"
 exportdefvar UBOOT_GITREPO              "uboot-imx"
 exportdefvar UBOOT_BRANCH               "uboot-imx-v2015.04"
-exportdefvar UBOOT_CONFIG               "mx6tinyrexbasic_config"
+exportdefvar UBOOT_CONFIG               "mx6openrexbasic_config"
 exportdefvar UBOOT_PRECOMPILE           ""
 exportdefvar UBOOT_RECOMPILE            n
 exportdefvar UBOOT_CLEAN                n
@@ -38,7 +38,7 @@ exportdefvar KERNEL_GITURL              "https://github.com/voipac"
 exportdefvar KERNEL_GITREPO             "linux-fslc"
 exportdefvar KERNEL_BRANCH              "4.1-2.0.x-imx-rex"
 exportdefvar KERNEL_CONFIG              "imx_v7_defconfig"
-exportdefvar KERNEL_DTB                 "imx6-tinyrexbasic.dtb"
+exportdefvar KERNEL_DTB                 "imx6-openrexbasic.dtb"
 exportdefvar KERNEL_PRECOMPILE          ""
 exportdefvar KERNEL_RECOMPILE           n
 exportdefvar KERNEL_CLEAN               n
