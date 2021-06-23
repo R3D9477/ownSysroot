@@ -1,8 +1,7 @@
 #!/bin/bash
+show_current_task
 
-show_message "$(basename $0)"
-
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 if ! pushd "${CACHE}/${KERNEL_GITREPO}-${KERNEL_BRANCH}" ; then goto_exit 1; fi
 

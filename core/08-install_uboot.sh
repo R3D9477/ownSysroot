@@ -1,8 +1,7 @@
 #!/bin/bash
+show_current_task
 
-show_message "$(basename $0)"
-
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 if [ -f "${CACHE}/${UBOOT_GITREPO}-${UBOOT_BRANCH}/SPL" ] ; then
     if ! ( preAuthRoot && sudo install -m 0755 "${CACHE}/${UBOOT_GITREPO}-${UBOOT_BRANCH}/SPL" "${BOOT}/" ) ; then goto_exit 1 ; fi

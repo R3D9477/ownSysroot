@@ -1,4 +1,7 @@
 #!/bin/bash
+show_current_task
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 exportdefvar IMG_BOOT                   ""
 exportdefvar HOST_MMC_BOOT              ""
@@ -34,6 +37,8 @@ if ( [ "${IMG_BOOT}" ] && [ "${HOST_MMC_BOOT}" ] ) ; then
 fi
 
 show_message "BURN SYSROOT: ${IMG_SYSROOT} -> ${HOST_MMC_SYSROOT}"
+
+if ! [ `ls "${HOST_MMC_SYSROOT}"` ] ; then goto_exit 1 ; fi
 
 preAuthRoot ; dd if="${IMG_SYSROOT}" bs=32M | pv -s $(wc -c < "${IMG_SYSROOT}") | sudo dd of="${HOST_MMC_SYSROOT}" bs=32M
 sync_fs

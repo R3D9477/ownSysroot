@@ -1,19 +1,23 @@
 #!/bin/bash
+show_current_task
 
-if [ -z "${rtl8188eu_BRANCH}"    ] ; then export rtl8188eu_BRANCH="v5.2.2.4" ; fi
-if [ -z "${rtl8188eu_RECOMPILE}" ] ; then export rtl8188eu_RECOMPILE="n"     ; fi
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+
+exportdefvar rtl8188eu_GITURL     "https://github.com/lwfinger"
+exportdefvar rtl8188eu_GITREPO    "rtl8188eu"
+exportdefvar rtl8188eu_BRANCH     "v5.2.2.4"
+exportdefvar rtl8188eu_REVISION   ""
+exportdefvar rtl8188eu_RECOMPILE  n
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 # GET PACKAGES --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-rtl8188eu_GIT_URL="https://github.com/lwfinger"
-
-if ! ( get_git_pkg "${rtl8188eu_GIT_URL}" "rtl8188eu" "${rtl8188eu_BRANCH}" ) ; then exit 1 ; fi
+if ! ( get_git_pkg "${rtl8188eu_GITURL}" "${rtl8188eu_GITREPO}" "${rtl8188eu_BRANCH}" "${rtl8188eu_REVISION}" ) ; then goto_exit 1 ; fi
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 # INSTALL PACKAGES - --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 
-if ! pushd "${CACHE}/rtl8188eu-${rtl8188eu_BRANCH}" ; then exit 2 ; fi
+if ! pushd "${CACHE}/${rtl8188eu_GITREPO}-${rtl8188eu_BRANCH}" ; then goto_exit 2 ; fi
 
     KVER=$(cd "${SYSROOT}/lib/" && ls "modules")
     KERNEL_DIR=$(realpath -s "${SYSROOT}/lib/modules/${KVER}/build")

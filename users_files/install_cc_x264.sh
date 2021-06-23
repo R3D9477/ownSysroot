@@ -1,19 +1,23 @@
 #!/bin/bash
+show_current_task
 
-if [ -z "${x264_BRANCH}" ]    ; then export x264_BRANCH="stable" ; fi
-if [ -z "${x264_RECOMPILE}" ] ; then export x264_RECOMPILE="y"   ; fi
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+
+exportdefvar x264_GITURL     "https://code.videolan.org"
+exportdefvar x264_GITREPO    "videolan"
+exportdefvar x264_BRANCH     "stable"
+exportdefvar x264_REVISION   ""
+exportdefvar x264_RECOMPILE  n
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 # GET PACKAGES --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-x264_GIT_URL="https://code.videolan.org/videolan"
-
-if ! ( get_git_pkg "${x264_GIT_URL}" "x264" "${x264_BRANCH}" ) ; then exit 1 ; fi
+if ! ( get_git_pkg "${x264_GITURL}" "${x264_GITREPO}" "${x264_BRANCH}" "${x264_REVISION}" ) ; then goto_exit 1 ; fi
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 # INSTALL PACKAGES - --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 
-if ! pushd "${CACHE}/x264-${x264_BRANCH}" ; then exit 1 ; fi
+if ! pushd "${CACHE}/${x264_GITREPO}-${x264_BRANCH}/x264" ; then goto_exit 2 ; fi
 
     if [ "${x264_RECOMPILE}" != "n" ] ; then
         rm ".compiled"

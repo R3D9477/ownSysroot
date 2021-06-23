@@ -1,13 +1,17 @@
 #!/bin/bash
-
-exportdefvar ffmpeg_GITURL      "https://git.ffmpeg.org"
-exportdefvar ffmpeg_BRANCH      "release/4.2"
-exportdefvar ffmpeg_RECOMPILE   n
-exportdefvar ffmpeg_EXTRAARGS   " --extra-libs=-ldl --enable-libx264 --enable-nonfree --enable-gpl "
+show_current_task
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-show_current_task
+exportdefvar ffmpeg_GITURL      "https://git.ffmpeg.org"
+exportdefvar ffmpeg_GITREPO     "ffmpeg"
+exportdefvar ffmpeg_BRANCH      "release/4.2"
+exportdefvar ffmpeg_REVISION    ""
+exportdefvar ffmpeg_RECOMPILE   n
+
+exportdefvar ffmpeg_EXTRAARGS   " --extra-libs=-ldl --enable-libx264 --enable-nonfree --enable-gpl "
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 show_message                                    \
     "ffmpeg_BRANCH      : ${ffmpeg_BRANCH}"     \
@@ -25,12 +29,12 @@ show_message_counter "    continue in:"
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 # GET PACKAGES --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ----
 
-if ! ( get_git_pkg "${ffmpeg_GITURL}" "ffmpeg" "${ffmpeg_BRANCH}" ) ; then goto_exit 1 ; fi
+if ! ( get_git_pkg "${ffmpeg_GITURL}" "${ffmpeg_GITREPO}" "${ffmpeg_BRANCH}" "${ffmpeg_REVISION}" ) ; then goto_exit 1 ; fi
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 # INSTALL PACKAGES - --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-if ! pushd "${CACHE}/ffmpeg-${ffmpeg_BRANCH}" ; then goto_exit 2 ; fi
+if ! pushd "${CACHE}/${ffmpeg_GITREPO}-${ffmpeg_BRANCH}" ; then goto_exit 2 ; fi
 
     transformFsToHost
 

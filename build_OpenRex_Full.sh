@@ -98,18 +98,24 @@ popd
     # ADD USER'S PACKAGES
 
 pushd "${USERDIR}"
-    if ! ( bash "install_ffmpeg.sh" )                       ; then goto_exit 100 ; fi
-    if ! ( bash "imx/install_imx_gpu.sh" )                  ; then goto_exit 101 ; fi
-    if ! ( bash "imx/install_imx_vpu_cc.sh" )               ; then goto_exit 102 ; fi
-    if ! ( bash "install_gstreamer-1.0.sh" )                ; then goto_exit 103 ; fi  # Depends on GL/GLES/EGL
-    if ! ( bash "imx/install_imx_gst_cc.sh" )               ; then goto_exit 104 ; fi
-    if ! ( bash "install_v4l2loopback.sh" )                 ; then goto_exit 105 ; fi
-    if ! ( bash "install_Qt.sh" )                           ; then goto_exit 106 ; fi
-    if ! ( bash "install_ftpserver.sh" )                    ; then goto_exit 107 ; fi
-    if ! ( bash "install_rtl8188eu.sh" )                    ; then goto_exit 108 ; fi
-    if ! ( bash "install_wifiap.sh" )                       ; then goto_exit 109 ; fi
-    if ! ( bash "install_avrdude.sh" )                      ; then goto_exit 110 ; fi
-    if ! ( bash "install_spi-test.sh" )                     ; then goto_exit 111 ; fi
+    if ! ( bash "install_deb_libc6dev.sh" )                 ; then goto_exit 100 ; fi
+    if ! ( bash "install_deb_xml2.sh" )                     ; then goto_exit 101 ; fi
+    if ! ( bash "install_deb_gobj.sh" )                     ; then goto_exit 101 ; fi
+    if ! ( bash "install_cc_ffmpeg.sh" )                    ; then goto_exit 102 ; fi
+    if ! ( bash "imx/install_bin_imx_gpu.sh" )              ; then goto_exit 103 ; fi
+    if ! ( bash "imx/install_cc_imx_vpu.sh" )               ; then goto_exit 104 ; fi
+    if ! ( bash "install_cc_gstreamer-1.0.sh" )             ; then goto_exit 105 ; fi  # Depends on GL/GLES/EGL
+    if ! ( bash "imx/install_cc_imx_gst.sh" )               ; then goto_exit 106 ; fi
+    if ! ( bash "install_deb_v4l-utils.sh" )                ; then goto_exit 107 ; fi
+    if ! ( bash "install_cc_v4l2loopback.sh" )              ; then goto_exit 108 ; fi
+    if ! ( bash "install_cc_Qt.sh" )                        ; then goto_exit 109 ; fi
+    if ! ( bash "install_deb_ftpserver.sh" )                ; then goto_exit 110 ; fi
+    if ! ( bash "install_cc_rtl8188eu.sh" )                 ; then goto_exit 111 ; fi
+    if ! ( bash "install_deb_wifiap.sh" )                   ; then goto_exit 112 ; fi
+    if ! ( bash "install_deb_i2c_tools.sh" )                ; then goto_exit 113 ; fi
+    if ! ( bash "install_cc_avrdude.sh" )                   ; then goto_exit 114 ; fi
+    if ! ( bash "install_cc_spi-test.sh" )                  ; then goto_exit 115 ; fi
+    if ! ( bash "install_deb_socat.sh" )                    ; then goto_exit 116 ; fi
 popd
 
     # APPLY USER'S SYSROOT CONFIG
@@ -122,7 +128,7 @@ popd
     # USER'S APPLICATIONS
 
 pushd "${USERDIR}"
-    #if ! ( bash "install_QtApp.sh" "$HOME/path/to/my/own/Qt/Application/Folder" ) ; then goto_exit 300 ; fi
+    #if ! ( bash "install_cc_QtApp.sh" "$HOME/path/to/my/own/Qt/Application/Folder" ) ; then goto_exit 300 ; fi
     #...
 popd
 

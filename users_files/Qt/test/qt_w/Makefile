@@ -71,6 +71,8 @@ DIST          = /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/fea
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/devices/common/linux_device_post.conf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/devices/common/linux_arm_device_post.conf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/qconfig.pri \
+		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_ext_freetype.pri \
+		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_ext_libpng.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_accessibility_support_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_bootstrap_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_concurrent.pri \
@@ -190,6 +192,8 @@ Makefile: qt_w.pro /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/devices/common/linux_device_post.conf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/devices/common/linux_arm_device_post.conf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/qconfig.pri \
+		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_ext_freetype.pri \
+		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_ext_libpng.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_accessibility_support_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_bootstrap_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_concurrent.pri \
@@ -298,6 +302,8 @@ Makefile: qt_w.pro /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/devices/common/linux_device_post.conf:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/devices/common/linux_arm_device_post.conf:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/qconfig.pri:
+/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_ext_freetype.pri:
+/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_ext_libpng.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_accessibility_support_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_bootstrap_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_concurrent.pri:

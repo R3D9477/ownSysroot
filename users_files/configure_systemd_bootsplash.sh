@@ -1,32 +1,29 @@
 #!/bin/bash
+show_current_task
 
-BRANCH="master"
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+exportdefvar ppmtofbimg_GITURL     "https://github.com/rst"
+exportdefvar ppmtofbimg_GITREPO    "raspberry-compote"
+exportdefvar ppmtofbimg_BRANCH     "master"
+exportdefvar ppmtofbimg_REVISION   ""
+exportdefvar ppmtofbimg_RECOMPILE  n
 
-if ! pushd "${CACHE}" ; then exit 1 ; fi
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
+# GET PACKAGES --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    if [ ! -d "ppmtofbimg-${BRANCH}" ] ; then
-        if [ -f "ppmtofbimg-${BRANCH}.tar" ]; then
-            tar -xf "ppmtofbimg-${BRANCH}.tar"
-        else
-            if git clone -b "${BRANCH}" --single-branch "https://github.com/rst-/raspberry-compote.git" "ppmtofbimg-${BRANCH}" ; then
-                tar -cf "ppmtofbimg-${BRANCH}.tar" "ppmtofbimg-${BRANCH}"
-            else
-                exit 2
-            fi
-        fi
-    fi
+if ! ( get_git_pkg "${ppmtofbimg_GITURL}" "${ppmtofbimg_GITREPO}" "${ppmtofbimg_BRANCH}" "${ppmtofbimg_REVISION}" ) ; then goto_exit 1 ; fi
 
-    if ! pushd "ppmtofbimg-${BRANCH}/img" ; then exit 3 ; fi
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
+# INSTALL PACKAGES - --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 
-        if ! ( "$CC" -O2 -o ppmtofbimg ppmtofbimg.c ) ; then exit 4 ; fi
+if ! pushd "${CACHE}/${ppmtofbimg_GITREPO}-${ppmtofbimg_BRANCH}/ppmtofbimg" ; then goto_exit 2 ; fi
 
-        if ! ( preAuthRoot && sudo cp "ppmtofbimg" "${SYSROOT}/opt/" ) ; then exit 5 ; fi
+    if ! ( "$CC" -O2 -o ppmtofbimg ppmtofbimg.c ) ; then exit 3 ; fi
 
-        preAuthRoot && sudo cp "test24.ppm" "${SYSROOT}/opt/"
+    if ! ( preAuthRoot && sudo cp "ppmtofbimg" "${SYSROOT}/opt/" ) ; then exit 4 ; fi
 
-    popd
+    preAuthRoot && sudo cp "test24.ppm" "${SYSROOT}/opt/"
 
     preAuthRoot && echo "[Unit]
 Description=boot splash screen
@@ -40,3 +37,7 @@ WantedBy=basic.target" | sudo tee "${SYSROOT}/etc/systemd/system/boot-image.serv
     preAuthRoot && sudo chroot "${SYSROOT}" systemctl enable boot-image.service
 
 popd
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
+
+show_message "ppmtofbimg WAS SUCCESSFULLY INSTALLED!"

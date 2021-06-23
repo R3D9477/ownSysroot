@@ -1,4 +1,7 @@
 #!/bin/bash
+show_current_task
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 CORE_CACHE="${CACHE}"
 export CACHE=$(realpath -s -m "$CORE_CACHE/QtCache")    # OVERRIDE DESTINACTION CACHE DIRECTORY
@@ -8,7 +11,7 @@ export TC_URL="$Qt_TC_URL"                              # OVERRIDE TOOLCHAIN
 
 source "${COREDIR}/01-set_tc.sh"
 
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 transformFsToHost
 

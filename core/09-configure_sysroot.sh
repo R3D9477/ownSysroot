@@ -1,8 +1,7 @@
 #!/bin/bash
+show_current_task
 
-show_message "$(basename $0)"
-
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 preAuthRoot && echo "en_US UTF-8" | sudo tee "${SYSROOT}/etc/locale.gen"
 preAuthRoot && sudo chroot "${SYSROOT}" locale-gen
@@ -41,8 +40,3 @@ preAuthRoot && echo 'VIDEOMODE='                    | sudo tee -a "${SYSROOT}/et
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 
 preAuthRoot && sudo chroot "${SYSROOT}" bash -c "echo -e \"${DEV_PASS}\n${DEV_PASS}\" | passwd root"
-
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
-
-install_deb_pkgs i2c-tools
-install_deb_pkgs socat

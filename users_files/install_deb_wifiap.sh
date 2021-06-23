@@ -1,4 +1,7 @@
 #!/bin/bash
+show_current_task
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 install_deb_pkgs iw hostapd isc-dhcp-server
 

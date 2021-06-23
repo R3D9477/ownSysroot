@@ -1,6 +1,7 @@
 #!/bin/bash
+show_current_task
 
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 APPPATH="$1"
 APPNAME="$2"
@@ -10,8 +11,8 @@ if ! [ -d "${APPPATH}" ] ; then goto_exit 1 ; fi
 
 if ! pushd "${CACHE}" ; then goto_exit 2 ; fi
 
-    if [ -d "${APPNAME}" ] ; then rm -rf "${APPNAME}" ; fi
-    if [ -d "${SYSROOT}/opt/${APPNAME}" ] ; then ( preAuthRoot && sudo rm -rf "${SYSROOT}/opt/${APPNAME}" ) ; fi
+    preAuthRoot && sudo rm -rf "${APPNAME}"
+    preAuthRoot && sudo rm -rf "${SYSROOT}/opt/${APPNAME}"
 
     if ( cp -r "${APPPATH}" "${APPNAME}" ) ; then
 

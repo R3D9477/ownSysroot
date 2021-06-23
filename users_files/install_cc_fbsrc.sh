@@ -1,19 +1,23 @@
 #!/bin/bash
+show_current_task
 
-exportdefvar fbsrc_RECOMPILE    y
-exportdefvar fbsrc_GIT_URL      "https://github.com/vianpl"
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+
+exportdefvar fbsrc_GITURL       "https://github.com/vianpl"
+exportdefvar fbsrc_GITREPO      "fbsrc"
 exportdefvar fbsrc_BRANCH       "master"
 exportdefvar fbsrc_REVISION     ""
+exportdefvar fbsrc_RECOMPILE    n
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 # GET PACKAGES --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-if ! ( get_git_pkg "${fbsrc_GIT_URL}" "fbsrc" "${fbsrc_BRANCH}" "${fbsrc_REVISION}" ) ; then goto_exit 1 ; fi
+if ! ( get_git_pkg "${fbsrc_GITURL}" "${fbsrc_GITREPO}" "${fbsrc_BRANCH}" "${fbsrc_REVISION}" ) ; then goto_exit 1 ; fi
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 # INSTALL PACKAGES - --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 
-if ! pushd "${CACHE}/fbsrc-${fbsrc_BRANCH}" ; then goto_exit 2 ; fi
+if ! pushd "${CACHE}/${fbsrc_GITREPO}-${fbsrc_BRANCH}" ; then goto_exit 2 ; fi
 
     # MAKE
 

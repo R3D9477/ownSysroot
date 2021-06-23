@@ -1,12 +1,17 @@
 #!/bin/bash
-
-exportdefvar gst_BRANCH     "1.16"
-exportdefvar gst_RECOMPILE  y
-exportdefvar gst_MESON_OPS  "-Dorc=disabled -Dgst-plugins-base:gio=disabled -Dgst-plugins-bad:opencv=disabled"
+show_current_task
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-show_current_task
+exportdefvar gst_GITURL     "https://gitlab.freedesktop.org/gstreamer"
+exportdefvar gst_GITREPO    "gst-build"
+exportdefvar gst_BRANCH     "1.18"
+exportdefvar gst_REVISION   ""
+exportdefvar gst_RECOMPILE  n
+
+exportdefvar gst_MESON_OPS  "-Dorc=disabled -Dgst-plugins-base:gio=disabled -Dgst-plugins-bad:opencv=disabled"
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 show_message                                \
     "gst_BRANCH     : ${gst_BRANCH}"        \
@@ -18,16 +23,12 @@ show_message_counter "    continue in:"
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 # GET PACKAGES --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ----
 
-GST_GIT_URL="https://gitlab.freedesktop.org/gstreamer"
-
-if ! ( get_git_pkg "${GST_GIT_URL}" "gst-build" "${gst_BRANCH}" ) ; then goto_exit 1 ; fi
+if ! ( get_git_pkg "${gst_GITURL}" "${gst_GITREPO}" "${gst_BRANCH}" "${gst_REVISION}" ) ; then goto_exit 1 ; fi
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 # INSTALL PACKAGES - --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-if ! pushd "${CACHE}/gst-build-${gst_BRANCH}" ; then goto_exit 2 ; fi
-
-    install_deb_pkgs libc6-dev libmount-dev libglib2.0-dev
+if ! pushd "${CACHE}/${gst_GITREPO}-${gst_BRANCH}" ; then goto_exit 2 ; fi
 
     transformFsToHost
 
@@ -77,6 +78,13 @@ if ! pushd "${CACHE}/gst-build-${gst_BRANCH}" ; then goto_exit 2 ; fi
 
     preAuthRoot && sudo rm -rf "${SYSROOT}${HOST_PREFIX}/lib/gstreamer-1.0"
     if ! ( preAuthRoot && sudo chroot "${SYSROOT}" ln -s "${HOST_PREFIX}${HOST_LIBDIR}/gstreamer-1.0" "${HOST_PREFIX}/lib/gstreamer-1.0" ) ; then goto_exit 6 ; fi
+
+    preAuthRoot
+    sudo mkdir -p "${SYSROOT}/profile.d"
+    echo "#!/bin/sh
+export GST_PLUGIN_SCANNER='/usr/lib/gstreamer-1.0'
+export GST_PLUGIN_SYSTEM_PATH=${GST_PLUGIN_SCANNER}" | sudo tee "${SYSROOT}/profile.d/gst_env.sh"
+    sudo chmod +x "${SYSROOT}/profile.d/gst_env.sh"
 
 popd
 

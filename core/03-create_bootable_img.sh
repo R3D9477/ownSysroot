@@ -1,11 +1,12 @@
 #!/bin/bash
+show_current_task
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 exportdefvar IMG_DD_ARGS
 exportdefvar IMG_BOOT_SIZE_MB       32
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
-
-show_message "$(basename $0)"
 
 if [ -f "${IMG_NAME}" ] ; then
 

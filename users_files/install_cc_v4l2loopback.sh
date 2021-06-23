@@ -1,22 +1,25 @@
 #!/bin/bash
+show_current_task
 
-exportdefvar v4l2loopback_RECOMPILE     y
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+
 exportdefvar v4l2loopback_GIT_URL       "https://github.com/umlaeute"
-exportdefvar v4l2loopback_BRANCH        "master"
+exportdefvar v4l2loopback_GITREPO       "v4l2loopback"
+exportdefvar v4l2loopback_BRANCH        "main"
 exportdefvar v4l2loopback_REVISION      ""
+exportdefvar v4l2loopback_RECOMPILE     n
+
 exportdefvar v4l2loopback_MOD_OPS       "devices=1 video_nr=50"
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 # GET PACKAGES
 
-if ! ( get_git_pkg "${v4l2loopback_GIT_URL}" "v4l2loopback" "${v4l2loopback_BRANCH}" "${v4l2loopback_REVISION}" ) ; then goto_exit 1 ; fi
+if ! ( get_git_pkg "${v4l2loopback_GIT_URL}" "${v4l2loopback_GITREPO}" "${v4l2loopback_BRANCH}" "${v4l2loopback_REVISION}" ) ; then goto_exit 1 ; fi
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 # INSTALL PACKAGES
 
-if ! pushd "${CACHE}/v4l2loopback-${v4l2loopback_BRANCH}" ; then goto_exit 2 ; fi
-
-    install_deb_pkgs v4l-utils
+if ! pushd "${CACHE}/${v4l2loopback_GITREPO}-${v4l2loopback_BRANCH}" ; then goto_exit 2 ; fi
 
     # MAKE
 

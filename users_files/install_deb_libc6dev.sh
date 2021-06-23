@@ -3,6 +3,4 @@ show_current_task
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-# REMOVE ETH0
-
-preAuthRoot && sudo rm "${SYSROOT}"/etc/network/interfaces.d/*eth*
+install_deb_pkgs libc6-dev libmount-dev libglib2.0-dev

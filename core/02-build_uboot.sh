@@ -1,4 +1,7 @@
 #!/bin/bash
+show_current_task
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 exportdefvar UBOOT_GITURL       ""
 exportdefvar UBOOT_GITREPO      ""
@@ -9,7 +12,6 @@ exportdefvar UBOOT_CLEAN        ""
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-show_current_task
 
 show_message                                    \
     "UBOOT_GITURL     : ${UBOOT_GITURL}"        \

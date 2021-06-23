@@ -1,4 +1,7 @@
 #!/bin/bash
+show_current_task
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 exportdefvar KERNEL_GITURL      ""
 exportdefvar KERNEL_GITREPO     ""
@@ -9,8 +12,6 @@ exportdefvar KERNEL_CLEAN       ""
 exportdefvar KERNEL_OUTPUT      "zImage"
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
-
-show_current_task
 
 show_message                                    \
     "KERNEL_GITURL     : ${KERNEL_GITURL}"      \

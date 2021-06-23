@@ -1,4 +1,7 @@
 #!/bin/bash
+show_current_task
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 exportdefvar HOST_MMC_BOOT      ""
 exportdefvar HOST_MMC_SYSROOT   ""
