@@ -3,20 +3,18 @@ show_current_task
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-exportdefvar ffmpeg_GITURL      "https://git.ffmpeg.org"
-exportdefvar ffmpeg_GITREPO     "ffmpeg"
-exportdefvar ffmpeg_BRANCH      "release/4.2"
-exportdefvar ffmpeg_REVISION    ""
-exportdefvar ffmpeg_RECOMPILE   n
-
-exportdefvar ffmpeg_EXTRAARGS   " --extra-libs=-ldl --enable-libx264 --enable-nonfree --enable-gpl "
+exportdefvar libav_GITURL      "https://github.com/libav"
+exportdefvar libav_GITREPO     "libav"
+exportdefvar libav_BRANCH      "release/12"
+exportdefvar libav_REVISION    ""
+exportdefvar libav_RECOMPILE   n
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 show_message                                    \
-    "ffmpeg_BRANCH      : ${ffmpeg_BRANCH}"     \
-    "ffmpeg_RECOMPILE   : ${ffmpeg_RECOMPILE}"  \
-    "ffmpeg_EXTRAARGS   : ${ffmpeg_EXTRAARGS}"  \
+    "libav_BRANCH       : ${libav_BRANCH}"      \
+    "libav_RECOMPILE    : ${libav_RECOMPILE}"   \
+    "libav_EXTRAARGS    : ${libav_EXTRAARGS}"   \
     "ARCH               : ${ARCH}"              \
     "CPU                : ${mARCH}"             \
     "PATH               : ${PATH}"              \
@@ -29,16 +27,16 @@ show_message_counter "    continue in:"
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 # GET PACKAGES --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ----
 
-if ! ( get_git_pkg "${ffmpeg_GITURL}" "${ffmpeg_GITREPO}" "${ffmpeg_BRANCH}" "${ffmpeg_REVISION}" ) ; then goto_exit 1 ; fi
+if ! ( get_git_pkg "${libav_GITURL}" "${libav_GITREPO}" "${libav_BRANCH}" "${libav_REVISION}" ) ; then goto_exit 1 ; fi
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 # INSTALL PACKAGES - --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-if ! pushd "${CACHE}/${ffmpeg_GITREPO}-${ffmpeg_BRANCH}" ; then goto_exit 2 ; fi
+if ! pushd "${CACHE}/${libav_GITREPO}-${libav_BRANCH}" ; then goto_exit 2 ; fi
 
     transformFsToHost
 
-    if ( [ "${ffmpeg_RECOMPILE}" != "n" ] || ! [ -f ".made" ] ) ; then
+    if ( [ "${libav_RECOMPILE}" != "n" ] || ! [ -f ".made" ] ) ; then
         rm ".made"
         rm -rf "bin"
         make clean
@@ -58,14 +56,15 @@ if ! pushd "${CACHE}/${ffmpeg_GITREPO}-${ffmpeg_BRANCH}" ; then goto_exit 2 ; fi
             --disable-indev=oss                 \
             --enable-shared                     \
             --enable-pic                        \
-            ${ffmpeg_EXTRAARGS}
+            ${libav_EXTRAARGS}
         )
         then goto_exit 3 ; fi
 
         if ! ( make ${NJ} ) ; then goto_exit 4 ; fi
 
-        mkdir "bin"
-        if ! ( DESTDIR="bin" make install ) ; then goto_exit 5 ; fi
+        mkdir -p "bin/usr/lib"
+        mkdir -p "bin/usr/bin"
+        if ! ( DESTDIR=$(realpath "bin") make install ) ; then goto_exit 5 ; fi
 
         echo "1" > ".made"
     fi
@@ -92,4 +91,4 @@ popd
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-show_message "FFMPEG WAS SUCCESSFULLY INSTALLED!"
+show_message "LIBAV WAS SUCCESSFULLY INSTALLED!"

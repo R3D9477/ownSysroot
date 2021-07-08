@@ -61,8 +61,6 @@ pushd "${CACHE}/${IMX_VPU}"
 
     rm -rf bin ; mkdir bin
 
-    export CFLAGS="${CFLAGS} -O2"
-
     make clean
     if ! ( make PLATFORM=IMX6Q all ) ; then goto_exit 14 ; fi
     if ! ( DEST_DIR="bin" make install ) ; then goto_exit 15 ; fi

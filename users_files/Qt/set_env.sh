@@ -27,3 +27,5 @@ if ( [[ "${Qt_ARCH}" =~ "arm" ]] || [[ "${Qt_ARCH}" =~ "aarch" ]] ) ; then  expo
 elif [[ "${Qt_ARCH}" =~ "x86" ]] ; then                                     exportdefvar Qt_OPENGL   "desktop"
 else                                                                        exportdefvar Qt_OPENGL   "dynamic"
 fi
+
+export LDFLAGS="${LDFLAGS} -Bsymbolic-functions --hash-style=gnu"

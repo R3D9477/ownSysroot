@@ -47,17 +47,20 @@ exportdefvar HOST_LIBDIR        "/lib/${TOOLCHAIN_SYS}"
 exportdefvar PKG_CONFIG_LIBDIR  "${SYSROOT}${HOST_PREFIX}/lib/pkgconfig:${SYSROOT}${HOST_PREFIX}${HOST_LIBDIR}/pkgconfig"
 
 exportdefvar CONFIGURE_FLAGS    " --with-libtool-sysroot=${SYSROOT}"
-exportdefvar CFLAGS             " --sysroot=${SYSROOT} -march=${mARCH} -I${SYSROOT}/include -I${SYSROOT}${HOST_PREFIX}/include"
+exportdefvar CFLAGS             " -O2 --sysroot=${SYSROOT} -march=${mARCH} -I${SYSROOT}/include -I${SYSROOT}${HOST_PREFIX}/include"
 exportdefvar CPPFLAGS           "${CFLAGS}"
 exportdefvar CXXFLAGS           "${CFLAGS}"
 exportdefvar LDFLAGS            " --sysroot=${SYSROOT} -march=${mARCH} -Wl,-rpath-link,${SYSROOT}/lib/${TOOLCHAIN_SYS} -Wl,-rpath-link,${SYSROOT}${HOST_PREFIX}${HOST_LIBDIR}"
 exportdefvar LINKFLAGS          "${LDFLAGS}"
+
+#export LDFLAGS="${LDFLAGS} -Bsymbolic-functions --hash-style=gnu"
 
 exportdefvar AR                 "${TOOLCHAIN_PREFIX}ar"
 exportdefvar CC                 "${TOOLCHAIN_PREFIX}gcc"
 exportdefvar CXX                "${TOOLCHAIN_PREFIX}g++"
 exportdefvar CROSS_COMPILE      "${TOOLCHAIN_PREFIX}"
 exportdefvar CHOST              "${TOOLCHAIN_SYS}"
+exportdefvar RANLIB             "${TOOLCHAIN_PREFIX}ranlib"
 
 NJBUF="-j$(nproc)"
 if (( $NJBUF > 1 )) ; then NJBUF=$((NJBUF/2)) ; fi

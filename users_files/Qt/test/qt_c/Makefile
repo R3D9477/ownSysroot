@@ -39,7 +39,7 @@ COMPRESS      = gzip -9f
 DISTNAME      = qt_c1.0.0
 DISTDIR = /home/mcp1/host-home/Projects/r3d9u11/imx6deb/users_files/Qt/test/qt_c/.tmp/qt_c1.0.0
 LINK          = /home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-5.5.0-2017.10-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++
-LFLAGS        = -mfloat-abi=hard --sysroot=/home/mcp1/Desktop/mcp1-dev/mount/sysroot -Wl,-O1 -Wl,-rpath,/home/mcp1/Desktop/mcp1-dev/mount/sysroot/lib/arm-linux-gnueabihf -Wl,-rpath,/home/mcp1/Desktop/mcp1-dev/mount/sysroot/usr/lib/arm-linux-gnueabihf -Wl,-rpath,/opt/Qt5.15/lib
+LFLAGS        = -mfloat-abi=hard --sysroot=/home/mcp1/Desktop/mcp1-dev/mount/sysroot -Wl,-O1 -Wl,-rpath,/home/mcp1/Desktop/mcp1-dev/mount/sysroot/lib/arm-linux-gnueabihf -Wl,-rpath,/home/mcp1/Desktop/mcp1-dev/mount/sysroot/usr/lib/arm-linux-gnueabihf -Wl,-rpath,/opt/Qt5.15/lib -fPIC
 LIBS          = $(SUBLIBS) /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/lib/libQt5Core.so -lpthread   
 AR            = /home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-5.5.0-2017.10-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-ar cqs
 RANLIB        = 
@@ -153,6 +153,7 @@ DIST          = /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/fea
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/resources_functions.prf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/resources.prf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/moc.prf \
+		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/link_ltcg.prf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/unix/thread.prf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/qmake_use.prf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/file_copies.prf \
@@ -271,6 +272,7 @@ Makefile: qt_c.pro /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/resources_functions.prf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/resources.prf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/moc.prf \
+		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/link_ltcg.prf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/unix/thread.prf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/qmake_use.prf \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/file_copies.prf \
@@ -379,6 +381,7 @@ Makefile: qt_c.pro /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/resources_functions.prf:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/resources.prf:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/moc.prf:
+/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/link_ltcg.prf:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/unix/thread.prf:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/qmake_use.prf:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/file_copies.prf:

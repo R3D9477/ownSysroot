@@ -92,6 +92,7 @@ pushd "${CACHE}"
         -nomake tests                                       \
         -nomake examples                                    \
         -qt-zlib                                            \
+        -ltcg                                               \
         -opengl ${Qt_OPENGL} ; then goto_exit 1; fi
 
     if [ "${Qt_INSTALL_QML}" == "y" ] ; then
