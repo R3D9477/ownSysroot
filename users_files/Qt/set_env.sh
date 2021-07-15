@@ -28,4 +28,8 @@ elif [[ "${Qt_ARCH}" =~ "x86" ]] ; then                                     expo
 else                                                                        exportdefvar Qt_OPENGL   "dynamic"
 fi
 
+export CFLAGS="-Ofast --sysroot=${SYSROOT} -march=${mARCH} -I${SYSROOT}/include -I${SYSROOT}${HOST_PREFIX}/include"
+export CPPFLAGS="${CFLAGS}"
+export CXXFLAGS="${CFLAGS}"
+
 export LDFLAGS="${LDFLAGS} -Bsymbolic-functions --hash-style=gnu"

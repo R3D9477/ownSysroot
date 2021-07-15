@@ -1,8 +1,8 @@
 #!/bin/bash
 
-source "setEnv.sh"
+source "set_env.sh"
 
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 function mk_inst() {
 
@@ -86,6 +86,7 @@ pushd "${CACHE}"
         -prefix "${Qt_DIR}"                                 \
         -rpath                                              \
         -no-use-gold-linker                                 \
+        -no-feature-getentropy                              \
         -release                                            \
         -recheck                                            \
         -silent                                             \

@@ -22,6 +22,15 @@ exportdefvar DEV_USBOTG                 y
 exportdefvar DEV_USBOTG_AUTOINS         n
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+# CHECK FILESYSTEM --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ----
+
+if ! ( touch /tmp/.check_filesystem ) ; then
+    
+    show_message "ERROR: UNABLE TO WRITE CEHCKING FILE (probably root filesystem is read only)!"
+    goto_exit 1
+fi
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 # BURN IMAGE --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
 show_message "$(basename $0)"
@@ -38,7 +47,7 @@ fi
 
 show_message "BURN SYSROOT: ${IMG_SYSROOT} -> ${HOST_MMC_SYSROOT}"
 
-if ! [ `ls "${HOST_MMC_SYSROOT}"` ] ; then goto_exit 1 ; fi
+if ! [ `ls "${HOST_MMC_SYSROOT}"` ] ; then goto_exit 2 ; fi
 
 preAuthRoot ; dd if="${IMG_SYSROOT}" bs=32M | pv -s $(wc -c < "${IMG_SYSROOT}") | sudo dd of="${HOST_MMC_SYSROOT}" bs=32M
 sync_fs
@@ -64,37 +73,37 @@ sync_fs
 
 if [ "${DEV_STORAGE_FS}" == "ext4" ] ; then
 
-    if ! ( preAuthRoot && sudo mkfs.ext4 "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 2 ; fi
+    if ! ( preAuthRoot && sudo mkfs.ext4 "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 3 ; fi
     sync_fs
 
-    if ! ( preAuthRoot && sudo e2label "${HOST_MMC_SYSROOT_p}3" "${DEV_STORAGE_LBL}" ) ; then goto_exit 2 ; fi
+    if ! ( preAuthRoot && sudo e2label "${HOST_MMC_SYSROOT_p}3" "${DEV_STORAGE_LBL}" ) ; then goto_exit 4 ; fi
     sync_fs
 
-    if ! ( preAuthRoot && sudo fsck.ext4 -a -w -v "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 2 ; fi
+    if ! ( preAuthRoot && sudo fsck.ext4 -a -w -v "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 5 ; fi
 
     FSTAB_STORAGE_FS="ext4 defaults 0 0"
 
 elif [ "${DEV_STORAGE_FS}" == "exfat" ] ; then
 
-    if ! ( preAuthRoot && sudo mkfs.exfat "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 2 ; fi
+    if ! ( preAuthRoot && sudo mkfs.exfat "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 6 ; fi
     sync_fs
 
-    if ! ( preAuthRoot && sudo exfatlabel "${HOST_MMC_SYSROOT_p}3" "${DEV_STORAGE_LBL}" ) ; then goto_exit 2 ; fi
+    if ! ( preAuthRoot && sudo exfatlabel "${HOST_MMC_SYSROOT_p}3" "${DEV_STORAGE_LBL}" ) ; then goto_exit 7 ; fi
     sync_fs
 
-    if ! ( preAuthRoot && sudo fsck.exfat "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 2 ; fi
+    if ! ( preAuthRoot && sudo fsck.exfat "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 8 ; fi
 
     FSTAB_STORAGE_FS="exfat-fuse defaults 0 0"
 
 elif [ "${DEV_STORAGE_FS}" == "fat32" ] ; then
 
-    if ! ( preAuthRoot && sudo mkfs.fat -F32 "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 2 ; fi
+    if ! ( preAuthRoot && sudo mkfs.fat -F32 "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 9 ; fi
     sync_fs
 
-    if ! ( preAuthRoot && sudo fatlabel "${HOST_MMC_SYSROOT_p}3" "${DEV_STORAGE_LBL}" ) ; then goto_exit 2 ; fi
+    if ! ( preAuthRoot && sudo fatlabel "${HOST_MMC_SYSROOT_p}3" "${DEV_STORAGE_LBL}" ) ; then goto_exit 10 ; fi
     sync_fs
 
-    if ! ( preAuthRoot && sudo fsck.fat -a -w -v "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 2 ; fi
+    if ! ( preAuthRoot && sudo fsck.fat -a -w -v "${HOST_MMC_SYSROOT_p}3" ) ; then goto_exit 11 ; fi
 
     FSTAB_STORAGE_FS="vfat defaults 0 0"
 
@@ -102,7 +111,7 @@ else
 
     show_message "UNKNOWN STORAGE FILESYSTEM: ${DEV_STORAGE_FS}"
 
-    goto_exit 2
+    goto_exit 12
 fi
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
@@ -115,15 +124,15 @@ if ! [ -z "${DEV_FSTAB_MMC_PREFIX}" ] ; then
     SYSROOT_UUID=$(sudo blkid -s UUID -o value "${HOST_MMC_SYSROOT_p}2")
     STORAGE_UUID=$(sudo blkid -s UUID -o value "${HOST_MMC_SYSROOT_p}3")
 
-    if ( [ -z "${BOOT_UUID}" ] || [ -z "${SYSROOT_UUID}" ] || [ -z "${STORAGE_UUID}" ] ) ; then goto_exit 3 ; fi
+    if ( [ -z "${BOOT_UUID}" ] || [ -z "${SYSROOT_UUID}" ] || [ -z "${STORAGE_UUID}" ] ) ; then goto_exit 13 ; fi
 
     preAuthRoot && sudo mkdir -p "${SYSROOT}"
-    if ! ( preAuthRoot && sudo mount "${HOST_MMC_SYSROOT_p}2" "${SYSROOT}" ) ; then goto_exit 4 ; fi
+    if ! ( preAuthRoot && sudo mount "${HOST_MMC_SYSROOT_p}2" "${SYSROOT}" ) ; then goto_exit 14 ; fi
 
         # SET FSTAB
 
-        if ! ( preAuthRoot && sudo mkdir -p "${SYSROOT}/boot/efi" ) ; then goto_exit 5 ; fi
-        if ! ( preAuthRoot && sudo mkdir -p "${SYSROOT}${DEV_STORAGE_MNT}" ) ; then goto_exit 6 ; fi
+        if ! ( preAuthRoot && sudo mkdir -p "${SYSROOT}/boot/efi" ) ; then goto_exit 15 ; fi
+        if ! ( preAuthRoot && sudo mkdir -p "${SYSROOT}${DEV_STORAGE_MNT}" ) ; then goto_exit 16 ; fi
 
         if [ -z "${DEV_FSTAB_MMC_PREFIX}" ]
             then preAuthRoot && echo "UUID=${BOOT_UUID} /boot/efi vfat umask=0077 0 1" | sudo tee "${SYSROOT}/etc/fstab"
@@ -198,9 +207,9 @@ WantedBy=default.target" | sudo tee "${SYSROOT}/etc/systemd/system/otg_auto_inse
 
     pushd "${USERDIR}"
         if ! [ -z "${DEV_POSTCONFIG}" ] ; then
-            if ! [ -f "${DEV_POSTCONFIG}" ] ; then goto_exit 7 ; fi
+            if ! [ -f "${DEV_POSTCONFIG}" ] ; then goto_exit 17 ; fi
             pushd $(dirname "${DEV_POSTCONFIG}")
-                if ! ( eval ./$(basename "${DEV_POSTCONFIG}") ) ; then goto_exit 8 ; fi
+                if ! ( eval ./$(basename "${DEV_POSTCONFIG}") ) ; then goto_exit 18 ; fi
             popd
         fi
     popd
