@@ -23,6 +23,8 @@ exportdefvar Qt_BINBCK          "${CACHE}/Qt${Qt_VER}_${Qt_DEVICE}-${Qt_ARCH}_BI
 exportdefvar Qt_TEST            "$(realpath -s 'test')"
 exportdefvar Qt_EXPORT          "${CACHE}/qtest_$(date '+%Y%m%d%H%M%S')"
 
+exportdefvar Qt_MAKESCRIPT      "qt_make_full.sh"
+
 if ( [[ "${Qt_ARCH}" =~ "arm" ]] || [[ "${Qt_ARCH}" =~ "aarch" ]] ) ; then  exportdefvar Qt_OPENGL   "es2"
 elif [[ "${Qt_ARCH}" =~ "x86" ]] ; then                                     exportdefvar Qt_OPENGL   "desktop"
 else                                                                        exportdefvar Qt_OPENGL   "dynamic"

@@ -44,11 +44,11 @@ function export_app() {
 if ! [ -d "${Qt_EXPORT}" ] ; then mkdir -p "${Qt_EXPORT}" ; fi
 
 if ! ( qbuild "${Qt_TEST}/qt_c" )   ; then goto_exit 1 ; fi
-if ! ( qbuild "${Qt_TEST}/qt_w" )   ; then goto_exit 2 ; fi
+#if ! ( qbuild "${Qt_TEST}/qt_w" )   ; then goto_exit 2 ; fi
 if ! ( qbuild "${Qt_TEST}/qt_qc" )  ; then goto_exit 3 ; fi
 
 if ! ( export_app "qt_c" )          ; then goto_exit 4 ; fi
-if ! ( export_app "qt_w" )          ; then goto_exit 5 ; fi
+#if ! ( export_app "qt_w" )          ; then goto_exit 5 ; fi
 if ! ( export_app "qt_qc" )         ; then goto_exit 6 ; fi
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---

@@ -85,16 +85,19 @@ pushd "${CACHE}"
         -sysroot "${SYSROOT}"                               \
         -prefix "${Qt_DIR}"                                 \
         -rpath                                              \
-        -no-use-gold-linker                                 \
-        -no-feature-getentropy                              \
         -release                                            \
         -recheck                                            \
         -silent                                             \
-        -nomake tests                                       \
-        -nomake examples                                    \
         -qt-zlib                                            \
         -ltcg                                               \
-        -opengl ${Qt_OPENGL} ; then goto_exit 1; fi
+        -strip                                              \
+        -opengl ${Qt_OPENGL}                                \
+        -no-use-gold-linker                                 \
+        -no-feature-getentropy                              \
+        -nomake tests                                       \
+        -nomake examples                                    \
+    ; then
+        goto_exit 1; fi
 
     if [ "${Qt_INSTALL_QML}" == "y" ] ; then
         if ! mk_inst qtdeclarative ; then goto_exit 2; fi

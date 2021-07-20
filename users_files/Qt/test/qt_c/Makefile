@@ -87,22 +87,15 @@ DIST          = /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/fea
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_fontdatabase_support_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_gui.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_gui_private.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_input_support_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimedia.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimedia_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimediagsttools_private.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimediawidgets.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimediawidgets_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_network.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_network_private.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_opengl.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_opengl_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_openglextensions.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_openglextensions_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_packetprotocol_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_platformcompositor_support_private.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_printsupport.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_printsupport_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_qml.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_qml_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_qmldebug_private.pri \
@@ -122,8 +115,6 @@ DIST          = /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/fea
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quickshapes_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quicktemplates2.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quicktemplates2_private.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quickwidgets.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quickwidgets_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_serialport.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_serialport_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_service_support_private.pri \
@@ -132,8 +123,6 @@ DIST          = /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/fea
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_testlib.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_testlib_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_theme_support_private.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_widgets.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_widgets_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_xml.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_xml_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_zlib_private.pri \
@@ -206,22 +195,15 @@ Makefile: qt_c.pro /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_fontdatabase_support_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_gui.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_gui_private.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_input_support_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimedia.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimedia_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimediagsttools_private.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimediawidgets.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimediawidgets_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_network.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_network_private.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_opengl.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_opengl_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_openglextensions.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_openglextensions_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_packetprotocol_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_platformcompositor_support_private.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_printsupport.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_printsupport_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_qml.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_qml_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_qmldebug_private.pri \
@@ -241,8 +223,6 @@ Makefile: qt_c.pro /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quickshapes_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quicktemplates2.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quicktemplates2_private.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quickwidgets.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quickwidgets_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_serialport.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_serialport_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_service_support_private.pri \
@@ -251,8 +231,6 @@ Makefile: qt_c.pro /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_testlib.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_testlib_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_theme_support_private.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_widgets.pri \
-		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_widgets_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_xml.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_xml_private.pri \
 		/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_zlib_private.pri \
@@ -315,22 +293,15 @@ Makefile: qt_c.pro /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_fontdatabase_support_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_gui.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_gui_private.pri:
-/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_input_support_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimedia.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimedia_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimediagsttools_private.pri:
-/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimediawidgets.pri:
-/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_multimediawidgets_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_network.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_network_private.pri:
-/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_opengl.pri:
-/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_opengl_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_openglextensions.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_openglextensions_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_packetprotocol_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_platformcompositor_support_private.pri:
-/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_printsupport.pri:
-/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_printsupport_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_qml.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_qml_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_qmldebug_private.pri:
@@ -350,8 +321,6 @@ Makefile: qt_c.pro /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quickshapes_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quicktemplates2.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quicktemplates2_private.pri:
-/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quickwidgets.pri:
-/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_quickwidgets_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_serialport.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_serialport_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_service_support_private.pri:
@@ -360,8 +329,6 @@ Makefile: qt_c.pro /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_testlib.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_testlib_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_theme_support_private.pri:
-/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_widgets.pri:
-/home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_widgets_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_xml.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_xml_private.pri:
 /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/modules/qt_lib_zlib_private.pri:
