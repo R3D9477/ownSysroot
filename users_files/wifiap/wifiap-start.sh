@@ -43,6 +43,11 @@ EOF
 cat > "/etc/dhcp/dhcpd.conf" << EOF
 subnet 10.0.0.0 netmask 255.255.255.224 {
     range 10.0.0.2 10.0.0.10;
+    option routers 10.0.0.1;
+    option subnet-mask 255.255.255.0;
+    option broadcast-address 10.0.0.255;
+    default-lease-time 600;
+    max-lease-time 7200;
 }
 EOF
 
