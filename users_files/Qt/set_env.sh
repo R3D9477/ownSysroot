@@ -25,13 +25,16 @@ exportdefvar Qt_EXPORT          "${CACHE}/qtest_$(date '+%Y%m%d%H%M%S')"
 
 exportdefvar Qt_MAKESCRIPT      "qt_make_full.sh"
 
+exportdefvar Qt_USE_CCOPT       y
+
 if ( [[ "${Qt_ARCH}" =~ "arm" ]] || [[ "${Qt_ARCH}" =~ "aarch" ]] ) ; then  exportdefvar Qt_OPENGL   "es2"
 elif [[ "${Qt_ARCH}" =~ "x86" ]] ; then                                     exportdefvar Qt_OPENGL   "desktop"
 else                                                                        exportdefvar Qt_OPENGL   "dynamic"
 fi
 
-export CFLAGS="-Ofast --sysroot=${SYSROOT} -march=${mARCH} -I${SYSROOT}/include -I${SYSROOT}${HOST_PREFIX}/include"
-export CPPFLAGS="${CFLAGS}"
-export CXXFLAGS="${CFLAGS}"
-
-export LDFLAGS="${LDFLAGS} -Bsymbolic-functions --hash-style=gnu"
+if [[ "${Qt_USE_CCOPT}" == "y" ]] ; then
+    export CFLAGS=" -Ofast --sysroot=${SYSROOT} -march=${mARCH} -I${SYSROOT}/include -I${SYSROOT}${HOST_PREFIX}/include"
+    export CPPFLAGS="${CFLAGS}"
+    export CXXFLAGS="${CFLAGS}"
+    export LDFLAGS="${LDFLAGS} -Bsymbolic-functions --hash-style=gnu"
+fi

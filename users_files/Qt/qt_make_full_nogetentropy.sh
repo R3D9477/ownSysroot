@@ -93,6 +93,7 @@ pushd "${CACHE}"
         -nomake tests                                       \
         -nomake examples                                    \
         -no-use-gold-linker                                 \
+        -no-feature-getentropy                              \
     ; then
         goto_exit 1; fi
 
