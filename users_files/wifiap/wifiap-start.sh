@@ -5,13 +5,14 @@ if [ -f "/var/run/hostapd.pid" ] ; then rm "/var/run/hostapd.pid" ; fi
 
 systemctl stop isc-dhcp-server
 if [ -f "/var/run/dhcpd.pid" ] ; then rm "/var/run/dhcpd.pid" ; fi
+if [ -f "/var/lib/dhcp/dhcpd.leases" ] ; then rm "/var/lib/dhcp/dhcpd.leases" ; fi
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 AP=$(iw dev | grep Interface | xargs | cut -f 2 -d " ")
 
 if [ -z "$AP" ] ; then exit 1 ; fi
-if [ -f "/var/run/wifiap_${AP}.pid" ] ; then exit 0 ; fi
+if [ -f "/var/lock/wifiap_${AP}.lock" ] ; then exit 0 ; fi
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -70,4 +71,4 @@ systemctl start     isc-dhcp-server
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-echo "1" > "/var/run/wifiap_${AP}.pid"
+echo "1" > "/var/lock/wifiap_${AP}.lock"

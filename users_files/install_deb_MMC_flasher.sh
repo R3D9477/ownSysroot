@@ -49,11 +49,11 @@ if ( [ "${HOST_MMC_BOOT}" ] && [ "${HOST_MMC_SYSROOT}" ] ) ; then
         i=$((i+1))
 
         if ( ! [ "${IMG_BOOT}" ] || ! [ "${HOST_MMC_BOOT}" ] ) ; then
-            IMG_BOOT="/opt/${DN}/${DN}_${OUT_DEV}.img"
-            HOST_MMC_BOOT="${HOST_MMC_BOOT}"
+            export IMG_BOOT="/opt/${DN}/${DN}_${OUT_DEV}.img"
+            export HOST_MMC_BOOT="${HOST_MMC_BOOT}"
         elif ( ! [ "${IMG_SYSROOT}" ] || ! [ "${HOST_MMC_SYSROOT}" ] ) ; then
-            IMG_SYSROOT="/opt/${DN}/${DN}_${OUT_DEV}.img"
-            HOST_MMC_SYSROOT="${HOST_MMC_SYSROOT}"
+            export IMG_SYSROOT="/opt/${DN}/${DN}_${OUT_DEV}.img"
+            export HOST_MMC_SYSROOT="${HOST_MMC_SYSROOT}"
         fi
     done
 
@@ -61,8 +61,8 @@ else
     if ! ( preAuthRoot && sudo install -m 0755 "${IMG_MMC_FL}" "${SYSROOT}/opt/${DN}/" ) ; then goto_exit 3 ; fi
     unset IMG_BOOT
     unset HOST_MMC_BOOT
-    IMG_SYSROOT="/opt/${DN}/${FN}"
-    HOST_MMC_SYSROOT="${HOST_MMC}"
+    export IMG_SYSROOT="/opt/${DN}/${FN}"
+    export HOST_MMC_SYSROOT="${HOST_MMC}"
 fi
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
@@ -83,25 +83,22 @@ if ! ( preAuthRoot && sudo install -m 0755 "${COREDIR}"/*flash_image.sh "${SYSRO
 preAuthRoot && echo "#!/bin/bash
 source *func.sh
 
-exportdefvar USERDIR                \"/opt\"
-exportdefvar SYSROOT                \"/tmp/mmc_flasher_mount/sysroot\"
+exportdefvar USERDIR                    \"/opt\"
+exportdefvar SYSROOT                    \"/tmp/mmc_flasher_mount/sysroot\"
 
-exportdefvar IMG_BOOT               \"${IMG_BOOT}\"
-exportdefvar HOST_MMC_BOOT          \"${HOST_MMC_BOOT}\"
+exportdefvar IMG_BOOT                   \"${IMG_BOOT}\"
+exportdefvar HOST_MMC_BOOT              \"${HOST_MMC_BOOT}\"
 
-exportdefvar IMG_SYSROOT            \"${IMG_SYSROOT}\"
-exportdefvar HOST_MMC_SYSROOT       \"${HOST_MMC_SYSROOT}\"
+exportdefvar IMG_SYSROOT                \"${IMG_SYSROOT}\"
+exportdefvar HOST_MMC_SYSROOT           \"${HOST_MMC_SYSROOT}\"
 
-exportdefvar DEV_MAKE_STORAGE       ${DEV_MAKE_STORAGE}
-exportdefvar DEV_FSTAB_MMC_PREFIX   \"${DEV_FSTAB_MMC_PREFIX}\"
+exportdefvar DEV_MAKE_STORAGE           \"${DEV_MAKE_STORAGE}\"
+exportdefvar DEV_FSTAB_MMC_PREFIX       \"${DEV_FSTAB_MMC_PREFIX}\"
 
-exportdefvar DEV_STORAGE_FS         \"${DEV_STORAGE_FS}\"
-exportdefvar DEV_STORAGE_LBL        \"${DEV_STORAGE_LBL}\"
+exportdefvar DEV_STORAGE_FS             \"${DEV_STORAGE_FS}\"
+exportdefvar DEV_STORAGE_LBL            \"${DEV_STORAGE_LBL}\"
 
-exportdefvar DEV_USBOTG             ${DEV_USBOTG}
-exportdefvar DEV_USBOTG_AUTOINSERT  ${DEV_USBOTG_AUTOINSERT}
-
-exportdefvar DEV_POSTCONFIG         \"${DEV_POSTCONFIG}\"
+exportdefvar DEV_POSTCONFIG             \"${DEV_POSTCONFIG}\"
 
 /bin/bash /opt/${DN}/*flash_image.sh" | sudo tee -a "${SYSROOT}/opt/${DN}/install.sh"
 

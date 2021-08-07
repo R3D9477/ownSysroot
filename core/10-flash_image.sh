@@ -16,11 +16,6 @@ exportdefvar DEV_STORAGE_FS             "exfat"
 exportdefvar DEV_STORAGE_LBL            "STORAGE"
 exportdefvar DEV_STORAGE_MNT            "/mnt/storage"
 
-exportdefvar DEV_USBOTG_STATEF          "/sys/class/udc/ci_hdrc.0/state"
-exportdefvar DEV_USBOTG_LUNF            "/sys/devices/soc*/soc/2100000.aips-bus/2184000.usb/ci_hdrc.0/gadget/lun0/file"
-exportdefvar DEV_USBOTG                 y
-exportdefvar DEV_USBOTG_AUTOINS         n
-
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 # CHECK FILESYSTEM --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ----
 
@@ -129,80 +124,28 @@ if ! [ -z "${DEV_FSTAB_MMC_PREFIX}" ] ; then
     preAuthRoot && sudo mkdir -p "${SYSROOT}"
     if ! ( preAuthRoot && sudo mount "${HOST_MMC_SYSROOT_p}2" "${SYSROOT}" ) ; then goto_exit 14 ; fi
 
-        # SET FSTAB
+    # SET FSTAB
 
-        if ! ( preAuthRoot && sudo mkdir -p "${SYSROOT}/boot/efi" ) ; then goto_exit 15 ; fi
-        if ! ( preAuthRoot && sudo mkdir -p "${SYSROOT}${DEV_STORAGE_MNT}" ) ; then goto_exit 16 ; fi
+    if ! ( preAuthRoot && sudo mkdir -p "${SYSROOT}/boot/efi" ) ; then goto_exit 15 ; fi
+    if ! ( preAuthRoot && sudo mkdir -p "${SYSROOT}${DEV_STORAGE_MNT}" ) ; then goto_exit 16 ; fi
 
-        if [ -z "${DEV_FSTAB_MMC_PREFIX}" ]
-            then preAuthRoot && echo "UUID=${BOOT_UUID} /boot/efi vfat umask=0077 0 1" | sudo tee "${SYSROOT}/etc/fstab"
-            else preAuthRoot && echo "/dev/${DEV_FSTAB_MMC_PREFIX}1 /boot/efi vfat umask=0077 0 1" | sudo tee "${SYSROOT}/etc/fstab"
-        fi
-
-        if [ -z "${DEV_FSTAB_MMC_PREFIX}" ]
-            then preAuthRoot && echo "UUID=${SYSROOT_UUID} / ext4 noatime,errors=remount-ro 0 1" | sudo tee -a "${SYSROOT}/etc/fstab"
-            else preAuthRoot && echo "/dev/${DEV_FSTAB_MMC_PREFIX}2 / ext4 errors=remount-ro 0 1" | sudo tee -a "${SYSROOT}/etc/fstab"
-        fi
-
-        if [ -z "${DEV_FSTAB_MMC_PREFIX}" ]
-            then preAuthRoot && echo "UUID=${STORAGE_UUID} ${DEV_STORAGE_MNT} ${FSTAB_STORAGE_FS}" | sudo tee -a "${SYSROOT}/etc/fstab"
-            else preAuthRoot && echo "/dev/${DEV_FSTAB_MMC_PREFIX}3 ${DEV_STORAGE_MNT} ${FSTAB_STORAGE_FS}" | sudo tee -a "${SYSROOT}/etc/fstab"
-        fi
-
-        # SET USB-OTG
-
-        if [[ "${DEV_USBOTG}" == "y" ]] ; then
-
-            OTG_DEVICE="/dev/${DEV_FSTAB_MMC_PREFIX}3"
-
-            if [ -z "$(cat ${SYSROOT}/etc/modules | grep g_mass_storage)" ]
-                then preAuthRoot && echo "g_mass_storage" | sudo tee -a "${SYSROOT}/etc/modules"
-            fi
-
-            preAuthRoot && echo "options g_mass_storage removable=y ro=0 stall=0" | sudo tee "${SYSROOT}/etc/modprobe.d/g_mass_storage.conf"
-
-            if [ "${DEV_USBOTG_AUTOINS}" == y ] ; then
-
-                preAuthRoot && echo "#!/bin/bash
-OTG_STAT=\$(realpath ${DEV_USBOTG_STATEF})
-OTG_FILE=\$(realpath ${DEV_USBOTG_LUNF})
-while ( [ -f \"\${OTG_STAT}\" ] && [ -f \"\${OTG_FILE}\" ] ) ; do
-    DMESG=\"\$(dmesg -c | grep g_mass_storage)\"
-    if ( ! [ -z \"\${DMESG}\" ] && [ \"\$(cat \${OTG_STAT})\" == \"configured\" ] ) ; then
-        pkill \"${DEV_STORAGE_MNT}\"
-        umount \"${DEV_STORAGE_MNT}\"
-        rm -rf \"${DEV_STORAGE_MNT}\"
-        sleep 1s ; sync
-        echo \"${OTG_DEVICE}\" > \"\${OTG_FILE}\"
-    elif ( [ \"\$(cat \${OTG_STAT})\" != \"configured\" ] && [ -z \"\$(mount | grep ${OTG_DEVICE})\" ] ) ; then
-        echo \"\" > \"\${OTG_FILE}\"
-        sleep 1s ; sync
-        pkill \"${DEV_STORAGE_MNT}\"
-        rm -rf \"${DEV_STORAGE_MNT}\"
-        mkdir -p \"${DEV_STORAGE_MNT}\"
-        MNT_FS=\"\$(cat /etc/fstab  | grep ${OTG_DEVICE} | awk '{print \$3}')\"
-        MNT_OPT=\"\$(cat /etc/fstab | grep ${OTG_DEVICE} | awk '{print \$4}')\"
-        mount -t \"\${MNT_FS}\" -o \"\${MNT_OPT}\" \"${OTG_DEVICE}\" \"${DEV_STORAGE_MNT}\"
+    if [ -z "${DEV_FSTAB_MMC_PREFIX}" ]
+        then preAuthRoot && echo "UUID=${BOOT_UUID} /boot/efi vfat umask=0077 0 1" | sudo tee "${SYSROOT}/etc/fstab"
+        else preAuthRoot && echo "/dev/${DEV_FSTAB_MMC_PREFIX}1 /boot/efi vfat umask=0077 0 1" | sudo tee "${SYSROOT}/etc/fstab"
     fi
-    sleep 1s
-done
-exit 1" | sudo tee "${SYSROOT}/opt/otg_auto_insert.sh"
 
-                preAuthRoot && sudo chroot "${SYSROOT}" chmod +x "/opt/otg_auto_insert.sh"
+    if [ -z "${DEV_FSTAB_MMC_PREFIX}" ]
+        then preAuthRoot && echo "UUID=${SYSROOT_UUID} / ext4 noatime,errors=remount-ro 0 1" | sudo tee -a "${SYSROOT}/etc/fstab"
+        else preAuthRoot && echo "/dev/${DEV_FSTAB_MMC_PREFIX}2 / ext4 errors=remount-ro 0 1" | sudo tee -a "${SYSROOT}/etc/fstab"
+    fi
 
-                preAuthRoot && echo "[Unit]
-Description=USB-OTG auto insert
-[Service]
-ExecStart=/opt/otg_auto_insert.sh
-[Install]
-WantedBy=default.target" | sudo tee "${SYSROOT}/etc/systemd/system/otg_auto_insert.service"
-
-                preAuthRoot && sudo chroot "${SYSROOT}" systemctl enable otg_auto_insert
-            fi
-        fi
+    if [ -z "${DEV_FSTAB_MMC_PREFIX}" ]
+        then preAuthRoot && echo "UUID=${STORAGE_UUID} ${DEV_STORAGE_MNT} ${FSTAB_STORAGE_FS}" | sudo tee -a "${SYSROOT}/etc/fstab"
+        else preAuthRoot && echo "/dev/${DEV_FSTAB_MMC_PREFIX}3 ${DEV_STORAGE_MNT} ${FSTAB_STORAGE_FS}" | sudo tee -a "${SYSROOT}/etc/fstab"
+    fi
 
     sync_fs
-
+    
     #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
     pushd "${USERDIR}"

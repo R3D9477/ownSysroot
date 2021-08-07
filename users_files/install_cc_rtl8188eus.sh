@@ -3,11 +3,11 @@ show_current_task
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-exportdefvar rtl8188eus_GITURL     "https://github.com/aircrack-ng"
-exportdefvar rtl8188eus_GITREPO    "rtl8188eus"
-exportdefvar rtl8188eus_BRANCH     "v5.3.9"
-exportdefvar rtl8188eus_REVISION   ""
-exportdefvar rtl8188eus_RECOMPILE  n
+exportdefvar rtl8188eus_GITURL      "https://github.com/aircrack-ng"
+exportdefvar rtl8188eus_GITREPO     "rtl8188eus"
+exportdefvar rtl8188eus_BRANCH      "v5.3.9"
+exportdefvar rtl8188eus_REVISION    ""
+exportdefvar rtl8188eus_RECOMPILE   n
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 # GET PACKAGES --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -41,6 +41,7 @@ if ! pushd "${CACHE}/${rtl8188eus_GITREPO}-${rtl8188eus_BRANCH}" ; then goto_exi
     preAuthRoot && sudo rm "${SYSROOT}/opt/8188eu.ko"
     
     preAuthRoot && echo "blacklist r8188eu" | sudo tee "${SYSROOT}/etc/modprobe.d/50-8188eu.conf"
+    preAuthRoot && echo "options 8188eu rtw_power_mgnt=0 rtw_enusbss=0" | sudo tee -a "${SYSROOT}/etc/modprobe.d/50-8188eu.conf"
 
 popd
 
