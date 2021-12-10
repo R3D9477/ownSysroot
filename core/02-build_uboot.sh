@@ -6,7 +6,7 @@ show_current_task
 exportdefvar UBOOT_GITURL       ""
 exportdefvar UBOOT_GITREPO      ""
 exportdefvar UBOOT_BRANCH       ""
-exportdefvar UBOOT_PRECOMPILE   ""
+exportdefvar UBOOT_PATCH        ""
 exportdefvar UBOOT_RECOMPILE    ""
 exportdefvar UBOOT_CLEAN        ""
 
@@ -17,7 +17,7 @@ show_message                                    \
     "UBOOT_GITURL     : ${UBOOT_GITURL}"        \
     "UBOOT_GITREPO    : ${UBOOT_GITREPO}"       \
     "UBOOT_BRANCH     : ${UBOOT_BRANCH}"        \
-    "UBOOT_PRECOMPILE : ${UBOOT_PRECOMPILE}"    \
+    "UBOOT_PATCH      : ${UBOOT_PATCH}"         \
     "UBOOT_RECOMPILE  : ${UBOOT_RECOMPILE}"     \
     "UBOOT_CLEAN      : ${UBOOT_CLEAN}"
 
@@ -31,11 +31,7 @@ if ! ( get_git_pkg "${UBOOT_GITURL}" "${UBOOT_GITREPO}" "${UBOOT_BRANCH}" ) ; th
 
 if ! pushd "${CACHE}" ; then goto_exit 2 ; fi
 
-    pushd "${USERDIR}"
-        if ! [ -z "${UBOOT_PRECOMPILE}" ] ; then
-            if ! ( eval ${UBOOT_PRECOMPILE} ) ; then goto_exit 3 ; fi
-        fi
-    popd
+    if ! ( run_patcher "${UBOOT_PATCH}" ) ; then goto_exit 3 ; fi
 
     if ! pushd "${UBOOT_GITREPO}-${UBOOT_BRANCH}" ; then goto_exit 4 ; fi
 

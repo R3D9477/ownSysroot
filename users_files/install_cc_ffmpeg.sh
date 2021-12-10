@@ -5,7 +5,7 @@ show_current_task
 
 exportdefvar ffmpeg_GITURL      "https://git.ffmpeg.org"
 exportdefvar ffmpeg_GITREPO     "ffmpeg"
-exportdefvar ffmpeg_BRANCH      "release/4.2"
+exportdefvar ffmpeg_BRANCH      "release/4.0"
 exportdefvar ffmpeg_REVISION    ""
 exportdefvar ffmpeg_RECOMPILE   n
 

@@ -1,0 +1,28 @@
+diff -ur imx-gpu-viv-6.4.3.p1.2-aarch32/gpu-core/usr/include/EGL/eglplatform.h gpu-core/usr/include/EGL/eglplatform.h
+--- imx-gpu-viv-6.4.3.p1.2-aarch32/gpu-core/usr/include/EGL/eglplatform.h	2021-02-09 18:09:10.000000000 +0300
++++ gpu-core/usr/include/EGL/eglplatform.h	2021-09-25 20:23:47.942220621 +0300
+@@ -67,6 +67,10 @@
+  * implementations.
+  */
+ 
++#if !defined(EGL_API_X11) && !defined(EGL_API_DFB) && !defined(EGL_API_FB)
++#define EGL_API_FB
++#endif
++
+ #if defined(_WIN32) || defined(__VC32__) && !defined(__CYGWIN__) && !defined(__SCITECH_SNAP__)
+ #ifndef WIN32_LEAN_AND_MEAN
+ /* #define WIN32_LEAN_AND_MEAN 1 */
+diff -ur imx-gpu-viv-6.4.3.p1.2-aarch32/gpu-core/usr/include/EGL/eglvivante.h gpu-core/usr/include/EGL/eglvivante.h
+--- imx-gpu-viv-6.4.3.p1.2-aarch32/gpu-core/usr/include/EGL/eglvivante.h	2021-02-09 18:09:10.000000000 +0300
++++ gpu-core/usr/include/EGL/eglvivante.h	2021-09-25 20:16:22.098704910 +0300
+@@ -201,6 +201,10 @@
+ }
+ platEvent;
+ 
++#if !defined(EGL_API_X11) && !defined(EGL_API_DFB) && !defined(EGL_API_FB)
++#define EGL_API_FB
++#endif
++
+ #if (defined(__linux__) && defined(EGL_API_FB) && !defined(__APPLE__)) \
+     || (defined(__VXWORKS__))
+ 

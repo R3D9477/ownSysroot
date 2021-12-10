@@ -1,16 +1,17 @@
 #!/bin/bash
+show_current_task
 
-IMX_FIRMWARE="firmware-imx-7.5"
-IMX_VPU="imx-vpu-5.4.38"
-IMX_CODEC="imx-codec-4.3.5"
+exportdefvar IMX_FIRMWARE           "firmware-imx-7.5"
+exportdefvar IMX_VPU                "imx-vpu-5.4.38"
+exportdefvar IMX_CODEC              "imx-codec-4.3.5"
 
-IMX_DMABUFFER_BRANCH="master"
-IMX_DMABUFFER_REVISION=
+exportdefvar IMX_DMABUFFER_BRANCH   "master"
+exportdefvar IMX_DMABUFFER_REVISION ""
 
-IMX_VPUAPI_BRANCH="master"
-IMX_VPUAPI_REVISION="4afb52f97e28c731c903a8538bf99e4a6d155b42"
+exportdefvar IMX_VPUAPI_BRANCH      "master"
+exportdefvar IMX_VPUAPI_REVISION    "4afb52f97e28c731c903a8538bf99e4a6d155b42"
 
-IMX="imx6"
+exportdefvar IMX                    "imx6"
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 # GET PACKAGES --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---

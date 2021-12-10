@@ -1,14 +1,15 @@
 #!/bin/bash
+show_current_task
 
-exportdefvar IMX_FIRMWARE               "firmware-imx-7.5"
-exportdefvar IMX_VPU                    "imx-vpu-5.4.38"
-exportdefvar IMX_CODEC                  "imx-codec-4.3.5"
+exportdefvar IMX_FIRMWARE               "firmware-imx-7.5" #"firmware-imx-8.12"
+exportdefvar IMX_VPU                    "imx-vpu-5.4.38"   #"imx-vpu-5.4.39.3"
+exportdefvar IMX_CODEC                  "imx-codec-4.3.5"  #"imx-codec-4.6.1"
 
 exportdefvar IMX_DMABUFFER_BRANCH       "master"
 exportdefvar IMX_DMABUFFER_REVISION     ""
 
-exportdefvar IMX_VPUAPI_BRANCH          "master"
-exportdefvar IMX_VPUAPI_REVISION        "4afb52f97e28c731c903a8538bf99e4a6d155b42"
+exportdefvar IMX_VPUAPI_BRANCH          "master" #"2.2.0"
+exportdefvar IMX_VPUAPI_REVISION        "4afb52f97e28c731c903a8538bf99e4a6d155b42" #""
 
 exportdefvar IMX                        "imx6"
 
@@ -100,11 +101,11 @@ pushd "${CACHE}/libimxvpuapi-${IMX_VPUAPI_BRANCH}"
 
     rm -rf bin ; mkdir bin
 
-    if [[ "${PWD}" =~ "v2" ]]
-    then WAF_PARAMS="--sysroot-path=\"${SYSROOT}\" --imx-headers=/include --imx-platform=${IMX}"
+    if [[ "${PWD}" =~ "v2" ]] || [[ "${PWD}" =~ "-2" ]]
+    then if ! ( ./waf configure --prefix=${HOST_PREFIX} --sysroot-path="${SYSROOT}" --imx-headers="/include" --imx-platform=${IMX} ) ; then goto_exit 22 ; fi
+    else if ! ( ./waf configure --prefix=${HOST_PREFIX} ) ; then goto_exit 22 ; fi
     fi
 
-    if ! ( ./waf configure --prefix=${HOST_PREFIX} ${WAF_PARAMS} ) ; then goto_exit 22 ; fi
     if ! ( ./waf ) ; then goto_exit 23 ; fi
     if ! ( ./waf install --destdir=bin ) ; then goto_exit 24 ; fi
 

@@ -5,7 +5,7 @@ if [ -f "/var/run/hostapd.pid" ] ; then rm "/var/run/hostapd.pid" ; fi
 
 systemctl stop isc-dhcp-server
 if [ -f "/var/run/dhcpd.pid" ] ; then rm "/var/run/dhcpd.pid" ; fi
-if [ -f "/var/lib/dhcp/dhcpd.leases" ] ; then rm "/var/lib/dhcp/dhcpd.leases" ; fi
+rm "/var/lib/dhcp/dhcpd.leases*"
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -30,10 +30,14 @@ EOF
 cat > "/etc/hostapd.conf" << EOF
 interface=${AP}
 driver=nl80211
-ssid=MCP1
+ssid=MyWiFiAP
 hw_mode=g
-channel=6
+ieee80211n=1
+wme_enabled=1
+ht_capab=[SHORT-GI-20] [SHORT-GI-40][HT40+]
+channel=7
 wpa=0
+max_num_sta=20
 EOF
 
 cat > "/etc/default/hostapd" << EOF

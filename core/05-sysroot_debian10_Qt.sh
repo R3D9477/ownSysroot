@@ -7,7 +7,7 @@ try_to_extract_sysroot "sysroot_debian10_Qt"
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 
-if ! bash "${COREDIR}"/*sysroot_debian10_create_base.sh ; then showElapsedTime ; goto_exit 2 ; fi
+if ! bash "${COREDIR}"/*sysroot_debian10_base.sh ; then showElapsedTime ; goto_exit 2 ; fi
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 

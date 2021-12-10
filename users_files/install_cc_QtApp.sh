@@ -18,12 +18,17 @@ if ! pushd "${CACHE}" ; then goto_exit 2 ; fi
 
         pushd "${APPNAME}"
 
-            if ( "${SYSROOT}/opt"/Qt*"/bin/qmake" CONFIG+=release ) ; then
+            rm *.json
+            rm moc_*.cpp
+            rm qml_*.cpp
+            rm *_qml.cpp
+            rm Makefile
+            rm *.o
+            rm "${APPNAME}"
+            
+            if ( "${SYSROOT}/opt"/Qt*"/bin/qmake" CONFIG+=release) ; then
 
-                make clean
-
-                rm *.o
-                rm "${APPNAME}"
+                #make clean
 
                 transformFsToHost
                 if make ; then

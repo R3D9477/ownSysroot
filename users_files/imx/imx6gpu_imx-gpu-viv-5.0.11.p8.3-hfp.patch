@@ -1,0 +1,121 @@
+diff -ur imx-gpu-viv-5.0.11.p8.3-hfp_orig/gpu-core/usr/include/CL/cl.hpp gpu-core/usr/include/CL/cl.hpp
+--- imx-gpu-viv-5.0.11.p8.3-hfp_orig/gpu-core/usr/include/CL/cl.hpp	2016-03-10 17:21:10.000000000 +0300
++++ gpu-core/usr/include/CL/cl.hpp	2021-09-21 22:51:33.665091487 +0300
+@@ -177,7 +177,7 @@
+ #include <string>
+ #endif
+ 
+-#if defined(linux) || defined(__APPLE__) || defined(__MACOSX)
++#if defined(__linux__) || defined(__APPLE__) || defined(__MACOSX)
+ # include <alloca.h>
+ #endif // linux
+ 
+diff -ur imx-gpu-viv-5.0.11.p8.3-hfp_orig/gpu-core/usr/include/EGL/eglvivante.h gpu-core/usr/include/EGL/eglvivante.h
+--- imx-gpu-viv-5.0.11.p8.3-hfp_orig/gpu-core/usr/include/EGL/eglvivante.h	2016-03-10 17:18:16.000000000 +0300
++++ gpu-core/usr/include/EGL/eglvivante.h	2021-09-21 22:52:15.867882528 +0300
+@@ -37,6 +37,10 @@
+ extern "C" {
+ #endif
+ 
++#if !defined(EGL_API_X11) && !defined(EGL_API_DFB) && !defined(EGL_API_FB)
++#define EGL_API_FB
++#endif
++    
+ #if defined(_WIN32) || defined(__VC32__) && !defined(__CYGWIN__) && !defined(__SCITECH_SNAP__)
+ /* Win32 and Windows CE platforms. */
+ #include <windows.h>
+@@ -44,7 +48,7 @@
+ typedef HWND            EGLNativeWindowType;
+ typedef HBITMAP         EGLNativePixmapType;
+ 
+-#elif defined(LINUX) && defined(EGL_API_DFB) && !defined(__APPLE__)
++#elif defined(__linux__) && defined(EGL_API_DFB) && !defined(__APPLE__)
+ #include <directfb.h>
+ typedef IDirectFB * EGLNativeDisplayType;
+ typedef IDirectFBWindow *  EGLNativeWindowType;
+@@ -104,7 +108,7 @@
+     EGLNativePixmapType Pixmap
+     );
+ 
+-#elif defined(LINUX) && defined(EGL_API_FB) && !defined(__APPLE__)
++#elif defined(__linux__) && defined(EGL_API_FB) && !defined(__APPLE__)
+ 
+ #if defined(WL_EGL_PLATFORM)
+ /* Wayland types for client apps. */
+@@ -239,7 +243,7 @@
+     typedef void*                               EGLNativeDisplayType;
+ #endif
+ 
+-#elif defined(LINUX) || defined(__APPLE__)
++#elif defined(__linux__) || defined(__APPLE__)
+ /* X11 platform. */
+ #include <X11/Xlib.h>
+ #include <X11/Xutil.h>
+diff -ur imx-gpu-viv-5.0.11.p8.3-hfp_orig/gpu-core/usr/include/GL/glext.h gpu-core/usr/include/GL/glext.h
+--- imx-gpu-viv-5.0.11.p8.3-hfp_orig/gpu-core/usr/include/GL/glext.h	2016-03-10 17:21:19.000000000 +0300
++++ gpu-core/usr/include/GL/glext.h	2021-09-21 18:19:12.593202227 +0300
+@@ -464,9 +464,9 @@
+ 
+ #ifndef GL_VERSION_1_5
+ #define GL_VERSION_1_5 1
+-#include <stddef.h>
+-typedef ptrdiff_t GLsizeiptr;
+-typedef ptrdiff_t GLintptr;
++#include <KHR/khrplatform.h>
++typedef khronos_ssize_t GLsizeiptr;
++typedef khronos_intptr_t GLintptr;
+ #define GL_BUFFER_SIZE                    0x8764
+ #define GL_BUFFER_USAGE                   0x8765
+ #define GL_QUERY_COUNTER_BITS             0x8864
+diff -ur imx-gpu-viv-5.0.11.p8.3-hfp_orig/gpu-core/usr/include/HAL/gc_hal_eglplatform.h gpu-core/usr/include/HAL/gc_hal_eglplatform.h
+--- imx-gpu-viv-5.0.11.p8.3-hfp_orig/gpu-core/usr/include/HAL/gc_hal_eglplatform.h	2016-03-10 17:18:10.000000000 +0300
++++ gpu-core/usr/include/HAL/gc_hal_eglplatform.h	2021-09-21 22:52:39.955137704 +0300
+@@ -35,13 +35,13 @@
+     RGBQUAD       bmiColors[2];
+ } BITFIELDINFO;
+ 
+-#elif defined(LINUX) && defined(EGL_API_DFB) && !defined(__APPLE__)
++#elif defined(__linux__) && defined(EGL_API_DFB) && !defined(__APPLE__)
+ #include <directfb.h>
+ typedef struct _DFBDisplay * HALNativeDisplayType;
+ typedef struct _DFBWindow *  HALNativeWindowType;
+ typedef struct _DFBPixmap *  HALNativePixmapType;
+ 
+-#elif defined(LINUX) && defined(EGL_API_FB) && !defined(__APPLE__)
++#elif defined(__linux__) && defined(EGL_API_FB) && !defined(__APPLE__)
+ 
+ #if defined(EGL_API_WL)
+ 
+@@ -161,7 +161,7 @@
+     typedef void*                               HALNativeDisplayType;
+ #endif
+ 
+-#elif defined(LINUX) || defined(__APPLE__)
++#elif defined(__linux__) || defined(__APPLE__)
+ /* X11 platform. */
+ #include <X11/Xlib.h>
+ #include <X11/Xutil.h>
+diff -ur imx-gpu-viv-5.0.11.p8.3-hfp_orig/gpu-core/usr/include/HAL/gc_hal_options.h gpu-core/usr/include/HAL/gc_hal_options.h
+--- imx-gpu-viv-5.0.11.p8.3-hfp_orig/gpu-core/usr/include/HAL/gc_hal_options.h	2016-03-10 17:18:10.000000000 +0300
++++ gpu-core/usr/include/HAL/gc_hal_options.h	2021-09-21 22:53:03.990359228 +0300
+@@ -1133,7 +1133,7 @@
+  */
+ 
+ #ifndef gcdINTERRUPT_STATISTIC
+-#if defined(LINUX)
++#if defined(__linux__)
+ #   define gcdINTERRUPT_STATISTIC               1
+ #else
+ #   define gcdINTERRUPT_STATISTIC               0
+diff -ur imx-gpu-viv-5.0.11.p8.3-hfp_orig/gpu-core/usr/include/HAL/gc_hal_vg.h gpu-core/usr/include/HAL/gc_hal_vg.h
+--- imx-gpu-viv-5.0.11.p8.3-hfp_orig/gpu-core/usr/include/HAL/gc_hal_vg.h	2016-03-10 17:18:10.000000000 +0300
++++ gpu-core/usr/include/HAL/gc_hal_vg.h	2021-09-21 22:53:26.613597116 +0300
+@@ -27,7 +27,7 @@
+ #if gcdENABLE_VG
+ 
+ /* Thread routine type. */
+-#if defined(LINUX)
++#if defined(__linux__)
+     typedef gctINT              gctTHREADFUNCRESULT;
+     typedef gctPOINTER          gctTHREADFUNCPARAMETER;
+ #   define  gctTHREADFUNCTYPE

@@ -103,6 +103,7 @@ function chroot_script() {
     preAuthRoot
     if ! [ -f "${SYSROOT}/usr/bin/qemu-arm-static" ] ; then sudo cp "/usr/bin/qemu-arm-static" "${SYSROOT}/usr/bin/qemu-arm-static" ; fi
 
+    preAuthRoot
     if ( sudo chroot "${SYSROOT}" "/usr/bin/qemu-arm-static" "/bin/bash" -c "${CHRCMD}" ) ; then return 0 ; fi
 
     return 1
@@ -210,6 +211,14 @@ function clean_all() {
 }
 export -f clean_all
 
+function fix_owner()
+{
+    if [ -d "$1" ] ; then
+        preAuthRoot && sudo chown -R ${USER}:${USER} "$1"
+    fi
+}
+export -f fix_owner
+
 function fix_chmod() {
 
     PM=755
@@ -218,7 +227,7 @@ function fix_chmod() {
     preAuthRoot && sudo chmod -R ${PM} "${SYSROOT}/usr/include"
     preAuthRoot && sudo chmod -R ${PM} "${SYSROOT}/usr/lib/arm-linux-gnueabihf"
 
-    preAuthRoot && sudo chown ${USER}:${USER} "${CACHE}"
+    fix_owner "${CACHE}"
 }
 export -f fix_chmod
 
@@ -273,6 +282,70 @@ function install_deb_pkgs() {
 }
 export -f install_deb_pkgs
 
+function run_patcher() {
+
+    if ! [ -z "$1" ] ; then
+        
+        pushd "${USERDIR}"
+        
+        show_message "RUN_PATCHER: $1"
+        
+        if ! ( eval "$1" ) ; then
+            return 1;
+        fi
+    fi
+    return 0;
+}
+export -f run_patcher
+
+function get_zip_pkg() {
+
+    if ! pushd "${CACHE}" ; then goto_exit 1 ; fi
+        if ! [ -d "$2" ]  ; then
+            if ! [ -f "$2.zip" ] ; then
+                if ! ( wget -nc -O "$2.zip" "$1/$2.zip" ) ; then goto_exit 2 ; fi
+            fi
+            chmod +x "$2.zip"
+            if ! ( preAuthRoot && unzip ./"$2.zip" ) ; then goto_exit 3 ; fi
+            fix_chmod
+            fix_owner "$2"
+        fi
+    popd
+}
+export -f get_zip_pkg
+
+function get_arch_pkg() {
+
+    if ! pushd "${CACHE}" ; then goto_exit 1 ; fi
+        ARCH_NAME="${1##*/}"
+        ARCH_EXTN="${ARCH_NAME##*.}"
+        ARCH_DIRNAME=$(realpath -s "$(basename $(basename $(basename $(basename ${ARCH_NAME} .tar.xz) .tar.gz) .tgz) .zip)")
+        if ! [ -d "${ARCH_DIRNAME}" ] ; then
+            if ! [ -f "${ARCH_NAME}" ] ; then
+                if ! ( wget -nc -O "${ARCH_NAME}" "$1" ) ; then goto_exit 2 ; fi
+            fi
+            chmod +x "${ARCH_NAME}"
+            if [ "${ARCH_EXTN}" == "zip" ] ; then
+                if ! ( unzip "${ARCH_NAME}" )
+                then goto_exit 3
+                fi
+            elif [ "${ARCH_EXTN}" == "xz" ] ; then
+                if ! ( tar -xvf "${ARCH_NAME}" )
+                then goto_exit 4
+                fi
+            elif [ "${ARCH_EXTN}" == "gz" ] || [ "${ARCH_EXTN}" == "tgz" ] ; then
+                if ! ( tar -xzvf "${ARCH_NAME}" )
+                then goto_exit 5
+                fi
+            else goto_exit 6
+            fi
+            fix_chmod
+            fix_owner "${ARCH_DIRNAME}"
+        fi
+    popd
+}
+export -f get_arch_pkg
+
 function get_bin_pkg() {
 
     if ! pushd "${CACHE}" ; then goto_exit 1 ; fi
@@ -282,11 +355,10 @@ function get_bin_pkg() {
             fi
             chmod +x "$2.bin"
             if ! ( preAuthRoot && sudo ./"$2.bin" --force --auto-accept ) ; then goto_exit 3 ; fi
+            fix_chmod
+            fix_owner "$2"
         fi
     popd
-
-    fix_chmod
-    preAuthRoot && sudo chown ${USER}:${USER} "${CACHE}/$2"
 }
 export -f get_bin_pkg
 
@@ -320,17 +392,17 @@ function get_git_pkg() {
         if ! [ -d "${GIT_DIR}" ] ; then
             if [ -f "${GIT_DIR}.tar" ] ; then
                 if ! ( preAuthRoot && sudo tar -xpf "${GIT_DIR}.tar" ) ; then goto_exit 2 ; fi
+                fix_chmod
+                fix_owner "${GIT_DIR}"
             else
                 unset SB_FLAG
                 if [ -z "${GIT_REVISION}" ] ; then SB_FLAG="--single-branch" ; fi
-                if ! ( git clone -b "${GIT_BRANCH}" ${SB_FLAG} "${GIT_URL}" "${GIT_DIR}" ) ; then goto_exit 3 ; fi
+                if ! ( git -c http.sslVerify=false clone -b "${GIT_BRANCH}" ${SB_FLAG} "${GIT_URL}" "${GIT_DIR}" ) ; then goto_exit 3 ; fi
                 if ! ( tar -cf "${GIT_DIR}.tar" "${GIT_DIR}" ) ; then goto_exit 4 ; fi
+                fix_chmod
+                fix_owner "${GIT_DIR}"
             fi
         fi
-
-        fix_chmod
-        preAuthRoot && sudo chown "${USER}":"${USER}" "${CACHE}/${GIT_DIR}"
-
         if ! pushd "${GIT_DIR}" ; then goto_exit 5 ; fi
             if ! [ -z "${GIT_REVISION}" ] ; then
                 if ! ( git checkout "${GIT_REVISION}" ) ; then goto_exit 6 ; fi
@@ -452,6 +524,8 @@ function mount_sysroot() {
 export -f mount_sysroot
 
 function try_to_extract_sysroot() {
+
+    show_message "TRY TO EXTRACT SYSROOT PACKAGE \"${CACHE}/$1.tar\" ..."
 
     if [ -f "${CACHE}/$1.tar" ]; then
 

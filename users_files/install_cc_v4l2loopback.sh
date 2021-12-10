@@ -6,7 +6,7 @@ show_current_task
 exportdefvar v4l2loopback_GIT_URL       "https://github.com/umlaeute"
 exportdefvar v4l2loopback_GITREPO       "v4l2loopback"
 exportdefvar v4l2loopback_BRANCH        "main"
-exportdefvar v4l2loopback_REVISION      ""
+exportdefvar v4l2loopback_REVISION      "570ffb0098e8b31d70bf4eff818d20b3826336b3"
 exportdefvar v4l2loopback_RECOMPILE     n
 
 exportdefvar v4l2loopback_MOD_OPS       "devices=1 video_nr=50"

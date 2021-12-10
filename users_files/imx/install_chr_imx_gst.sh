@@ -1,9 +1,11 @@
 #!/bin/bash
+show_current_task
 
-IMX_GSTREAMER_BRANCH="master"
-IMX_GSTERANER_REVISION="889b8352ca09cd224be6a2f8d53efd59a38fa9cb" #
+exportdefvar IMX_GSTREAMER_BRANCH   "master"
 
-IMX_EGL="fb"
+exportdefvar IMX_GSTERANER_REVISION "889b8352ca09cd224be6a2f8d53efd59a38fa9cb" #
+
+exportdefvar IMX_EGL                "fb"
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 # GET PACKAGES --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---

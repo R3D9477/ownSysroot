@@ -1,27 +1,4 @@
 
-if [ ! "${TC_URL}" ] ; then
-    TC_URL="https://releases.linaro.org/components/toolchain/binaries/latest-7/arm-linux-gnueabihf/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz"
-fi
-
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
-
-if ! pushd "${CACHE}" ; then goto_exit 1 ; fi
-
-    if ! [ -f "gcc-arm-linux-gnueabihf.tar.xz" ] ; then
-        if ! ( wget -nc -O "gcc-arm-linux-gnueabihf.tar.xz" "${TC_URL}" ) ; then goto_exit 2 ; fi
-    fi
-
-    gccdir=(gcc-*arm-linux-gnueabihf)
-    if ! [ -e "${gccdir[0]}" ]; then
-        show_message "EXTRACT TOOLCHAIN: ${CACHE}/gcc-arm-linux-gnueabihf.tar.xz"
-        if ! ( preAuthRoot && sudo tar -xpf "gcc-arm-linux-gnueabihf.tar.xz" ) ; then goto_exit 3 ; fi
-        show_message "    done."
-    fi
-
-popd
-
-#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
-
 unset PKG_CONFIG_SYSROOT_DIR
 unset CONFIGURE_FLAGS
 unset CFLAGS
@@ -33,10 +10,18 @@ unset LINKFLAGS
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
+exportdefvar TC_URL             "https://releases.linaro.org/components/toolchain/binaries/latest-7/arm-linux-gnueabihf/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz"
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+
+if ! ( get_arch_pkg "${TC_URL}" ) ; then goto_exit 1 ; fi
+
+#--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
+
 exportdefvar ARCH               "arm"
 exportdefvar mARCH              "armv7-a"
 
-exportdefvar SDK_PATH_NATIVE    $(realpath -s "${CACHE}"/gcc-*arm-linux-gnueabihf)
+exportdefvar SDK_PATH_NATIVE    $(realpath -s "${CACHE}/$(basename $(basename $(basename $(basename ${TC_URL} .tar.xz) .tar.gz) .tgz) .zip)")
 
 exportdefvar TOOLCHAIN_SYS      "arm-linux-gnueabihf"
 exportdefvar TOOLCHAIN_PREFIX   "${SDK_PATH_NATIVE}/bin/${TOOLCHAIN_SYS}-"

@@ -6,7 +6,7 @@ show_current_task
 exportdefvar KERNEL_GITURL      ""
 exportdefvar KERNEL_GITREPO     ""
 exportdefvar KERNEL_BRANCH      ""
-exportdefvar KERNEL_PRECOMPILE  ""
+exportdefvar KERNEL_PATCH       ""
 exportdefvar KERNEL_RECOMPILE   ""
 exportdefvar KERNEL_CLEAN       ""
 exportdefvar KERNEL_OUTPUT      "zImage"
@@ -17,7 +17,7 @@ show_message                                    \
     "KERNEL_GITURL     : ${KERNEL_GITURL}"      \
     "KERNEL_GITREPO    : ${KERNEL_GITREPO}"     \
     "KERNEL_BRANCH     : ${KERNEL_BRANCH}"      \
-    "KERNEL_PRECOMPILE : ${KERNEL_PRECOMPILE}"  \
+    "KERNEL_PATCH      : ${KERNEL_PATCH}"       \
     "KERNEL_RECOMPILE  : ${KERNEL_RECOMPILE}"   \
     "KERNEL_CLEAN      : ${KERNEL_CLEAN}"       \
     "KERNEL_OUTPUT     : ${KERNEL_OUTPUT}"
@@ -32,11 +32,7 @@ if ! ( get_git_pkg "${KERNEL_GITURL}" "${KERNEL_GITREPO}" "${KERNEL_BRANCH}" ) ;
 
 if ! pushd "${CACHE}" ; then goto_exit 2 ; fi
 
-    pushd "${USERDIR}"
-        if ! [ -z "${KERNEL_PRECOMPILE}" ] ; then
-            if ! ( eval ${KERNEL_PRECOMPILE} ) ; then goto_exit 3 ; fi
-        fi
-    popd
+    if ! ( run_patcher "${KERNEL_PATCH}" ) ; then goto_exit 3 ; fi
 
     if ! pushd "${KERNEL_GITREPO}-${KERNEL_BRANCH}" ; then goto_exit 4 ; fi
 

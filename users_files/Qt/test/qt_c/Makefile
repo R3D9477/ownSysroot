@@ -12,8 +12,8 @@ EQ            = =
 
 ####### Compiler, tools and options
 
-CC            = /home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-5.5.0-2017.10-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc
-CXX           = /home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-5.5.0-2017.10-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++
+CC            = /home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc
+CXX           = /home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_CORE_LIB
 CFLAGS        = -pipe -march=armv7-a -mfpu=neon -DLINUX=1 -DEGL_API_FB=1 -mfloat-abi=hard --sysroot=/home/mcp1/Desktop/mcp1-dev/mount/sysroot -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -march=armv7-a -mfpu=neon -DLINUX=1 -DEGL_API_FB=1 -mfloat-abi=hard --sysroot=/home/mcp1/Desktop/mcp1-dev/mount/sysroot -O2 -std=gnu++11 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
@@ -38,13 +38,13 @@ TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = qt_c1.0.0
 DISTDIR = /home/mcp1/host-home/Projects/r3d9u11/imx6deb/users_files/Qt/test/qt_c/.tmp/qt_c1.0.0
-LINK          = /home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-5.5.0-2017.10-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++
+LINK          = /home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++
 LFLAGS        = -mfloat-abi=hard --sysroot=/home/mcp1/Desktop/mcp1-dev/mount/sysroot -Wl,-O1 -Wl,-rpath,/home/mcp1/Desktop/mcp1-dev/mount/sysroot/lib/arm-linux-gnueabihf -Wl,-rpath,/home/mcp1/Desktop/mcp1-dev/mount/sysroot/usr/lib/arm-linux-gnueabihf -Wl,-rpath,/opt/Qt5.15/lib
 LIBS          = $(SUBLIBS) /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/lib/libQt5Core.so -lpthread   
-AR            = /home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-5.5.0-2017.10-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-ar cqs
+AR            = /home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-ar cqs
 RANLIB        = 
 SED           = sed
-STRIP         = /home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-5.5.0-2017.10-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-strip
+STRIP         = /home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-strip
 
 ####### Output directory
 
@@ -432,7 +432,7 @@ compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/data/dummy.cpp
-	/home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-5.5.0-2017.10-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++ -pipe -march=armv7-a -mfpu=neon -DLINUX=1 -DEGL_API_FB=1 -mfloat-abi=hard --sysroot=/home/mcp1/Desktop/mcp1-dev/mount/sysroot -O2 -std=gnu++11 -Wall -Wextra -dM -E -o moc_predefs.h /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/data/dummy.cpp
+	/home/mcp1/Desktop/mcp1-dev/cache/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++ -pipe -march=armv7-a -mfpu=neon -DLINUX=1 -DEGL_API_FB=1 -mfloat-abi=hard --sysroot=/home/mcp1/Desktop/mcp1-dev/mount/sysroot -O2 -std=gnu++11 -Wall -Wextra -dM -E -o moc_predefs.h /home/mcp1/Desktop/mcp1-dev/mount/sysroot/opt/Qt5.15/mkspecs/features/data/dummy.cpp
 
 compiler_moc_header_make_all:
 compiler_moc_header_clean:

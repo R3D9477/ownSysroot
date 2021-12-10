@@ -7,9 +7,10 @@ exportdefvar gst_GITURL     "https://gitlab.freedesktop.org/gstreamer"
 exportdefvar gst_GITREPO    "gst-build"
 exportdefvar gst_BRANCH     "1.18"
 exportdefvar gst_REVISION   ""
+exportdefvar gst_PATCH      ""
 exportdefvar gst_RECOMPILE  n
 
-exportdefvar gst_MESON_OPS  "-Dorc=disabled -Dgst-plugins-base:gio=disabled -Dgst-plugins-bad:opencv=disabled"
+exportdefvar gst_MESON_OPS  ""
 
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
@@ -49,11 +50,13 @@ if ! pushd "${CACHE}/${gst_GITREPO}-${gst_BRANCH}" ; then goto_exit 2 ; fi
             fi
         popd
 
+        if ! ( run_patcher "${gst_PATCH}" ) ; then goto_exit 4  ; fi
+        
         if ( ! [ -f ".made" ] || ! [ -d "build" ] ) ; then
             rm ".made"
             mkdir "build"
             pushd "build"
-                if ! ( ninja ) ; then goto_exit 4 ; fi
+                if ! ( ninja ) ; then goto_exit 5 ; fi
             popd
         fi
 
@@ -68,7 +71,7 @@ if ! pushd "${CACHE}/${gst_GITREPO}-${gst_BRANCH}" ; then goto_exit 2 ; fi
 
         mkdir  "bin"
         pushd  "build"
-            if ! ( DESTDIR="${CACHE}/gst-build-${gst_BRANCH}/bin" ninja install ) ; then goto_exit 5 ; fi
+            if ! ( DESTDIR="${CACHE}/gst-build-${gst_BRANCH}/bin" ninja install ) ; then goto_exit 6 ; fi
         popd
     fi
 
@@ -77,7 +80,7 @@ if ! pushd "${CACHE}/${gst_GITREPO}-${gst_BRANCH}" ; then goto_exit 2 ; fi
     transformFsToDevice
 
     preAuthRoot && sudo rm -rf "${SYSROOT}${HOST_PREFIX}/lib/gstreamer-1.0"
-    if ! ( preAuthRoot && sudo chroot "${SYSROOT}" ln -s "${HOST_PREFIX}${HOST_LIBDIR}/gstreamer-1.0" "${HOST_PREFIX}/lib/gstreamer-1.0" ) ; then goto_exit 6 ; fi
+    if ! ( preAuthRoot && sudo chroot "${SYSROOT}" ln -s "${HOST_PREFIX}${HOST_LIBDIR}/gstreamer-1.0" "${HOST_PREFIX}/lib/gstreamer-1.0" ) ; then goto_exit 7 ; fi
 
     preAuthRoot
     sudo mkdir -p "${SYSROOT}/profile.d"

@@ -1,0 +1,13 @@
+--- gstcamerabinpreview.c.orig	2021-08-02 12:58:53.391031280 +0300
++++ gstcamerabinpreview.c	2021-09-07 21:57:34.875742952 +0300
+@@ -143,8 +143,8 @@
+   data->pipeline = gst_pipeline_new ("preview-pipeline");
+   data->appsrc = gst_element_factory_make ("appsrc", "preview-appsrc");
+   data->appsink = gst_element_factory_make ("appsink", "preview-appsink");
+-  csp = gst_element_factory_make ("videoconvert", "preview-vconv");
+-  vscale = gst_element_factory_make ("videoscale", "preview-vscale");
++  csp = gst_element_factory_make ("imxipuvideotransform", "preview-vconv");
++  vscale = gst_element_factory_make ("imxipuvideotransform", "preview-vscale");
+ 
+   if (!data->appsrc || !data->appsink || !csp || !vscale) {
+     goto error; 

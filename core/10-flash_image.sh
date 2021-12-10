@@ -148,15 +148,15 @@ if ! [ -z "${DEV_FSTAB_MMC_PREFIX}" ] ; then
     
     #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
-    pushd "${USERDIR}"
-        if ! [ -z "${DEV_POSTCONFIG}" ] ; then
+    if ! [ -z "${DEV_POSTCONFIG}" ] ; then
+        pushd "${USERDIR}"
             if ! [ -f "${DEV_POSTCONFIG}" ] ; then goto_exit 17 ; fi
             pushd $(dirname "${DEV_POSTCONFIG}")
                 if ! ( eval ./$(basename "${DEV_POSTCONFIG}") ) ; then goto_exit 18 ; fi
             popd
-        fi
-    popd
-
+        popd
+    fi
+    
     #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --
 
     sync_fs

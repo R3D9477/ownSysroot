@@ -44,6 +44,7 @@ preAuthRoot && sudo chroot "${SYSROOT}" apt remove linux-boundary* linux-headers
 #--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -
 
 install_deb_pkgs      \
+    pkg-config        \
     python-minimal    \
     exfat-utils       \
     exfat-fuse        \
