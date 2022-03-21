@@ -34,6 +34,8 @@ System for sysroot building written on pure Bash.
             * [Qt Multimedia](users_files/Qt/make_qt_multimedia.sh)
             * [Qt SerialPort](users_files/Qt/make_qt_serialport.sh)
         * [install_QtApp](users_files/install_cc_QtApp.sh) - install user's custom application (**cross-compilation**)
+            * first arg - full path to apllication's directory
+            * second arg - application's name
     * Other:
         * [install_spi-test](users_files/install_cc_spi-test.sh) - install application 'spitest' (**cross-compilation**)
         * [install_avrdude](users_files/install_cc_avrdude.sh) - install application 'avrdude' (**cross-compilation**)
