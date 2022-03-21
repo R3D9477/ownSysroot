@@ -3,6 +3,12 @@ System for sysroot building written on pure Bash.
 
 ### build_OpenRex_Full.sh:
 * script for automated building of Debian-based sysroot for OprenRex board (based on i.mx6 SoC)
+    * distributives:
+        * [05-sysroot_debian10_base](core/05-sysroot_debian10_base.sh) -- base Debian 10 system
+        * [05-sysroot_debian10_Qt](core/05-sysroot_debian10_Qt.sh) -- Debian 10 system + dependencies for Qt cross-compilation
+        * [05-sysroot_debian11_base](core/05-sysroot_debian11_base.sh) -- base Debian 11 system
+        * [05-sysroot_debian11_Qt](core/05-sysroot_debian11_Qt.sh) -- Debian 11 system + dependencies for Qt cross-compilation
+        * [05-sysroot_ubuntu1804_create_base](core/05-sysroot_ubuntu1804_create_base.sh) -- Ubuntu 18 system + dependencies for Qt cross-compilation
     * configs:
         * [configure_autologin](users_files/configure_autologin.sh) - configure autologin (**shell**)
         * [configure_disable_eth](users_files/configure_disable_eth.sh) - configure to disable ethernet (**shell**)
