@@ -28,11 +28,11 @@ System for sysroot building written on pure Bash.
         * [install_MMC_flasher](users_files/install_deb_MMC_flasher.sh) -- install sysrom from Live USB to device's MMC
         * [install_mtd_uboot](users_files/install_deb_MMC_flasher.sh) -- burn uboot from Live USB to device's MTD
     * Qt:
-        * [install_Qt](users_files/install_cc_Qt.sh) - install Qt libs (**cross-compilation**)
-            * [Qt Core](https://github.com/R3D9477/ownSysroot/blob/master/users_files/Qt/make.sh#L81)
-            * [Qt Quick2](https://github.com/R3D9477/ownSysroot/blob/master/users_files/Qt/make.sh#L97)
-            * [Qt Multimedia](https://github.com/R3D9477/ownSysroot/blob/master/users_files/Qt/make.sh#L102)
-            * [Qt SerialPort](https://github.com/R3D9477/ownSysroot/blob/master/users_files/Qt/make.sh#L106)
+        * [install_Qt](users_files/install_cc_Qt.sh) - install Qt5 libs (**cross-compilation**)
+            * [Qt Core](users_files/Qt/make_qt_base.sh)
+            * [Qt Quick2](users_files/Qt/make_qt_quick.sh)
+            * [Qt Multimedia](users_files/Qt/make_qt_multimedia.sh)
+            * [Qt SerialPort](users_files/Qt/make_qt_serialport.sh)
         * [install_QtApp](users_files/install_cc_QtApp.sh) - install user's custom application (**cross-compilation**)
     * Other:
         * [install_spi-test](users_files/install_cc_spi-test.sh) - install application 'spitest' (**cross-compilation**)
