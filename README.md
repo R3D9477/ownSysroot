@@ -7,6 +7,7 @@ System for sysroot building written on pure Bash.
         * [configure_autologin](users_files/configure_autologin.sh) - configure autologin (**shell**)
         * [configure_disable_eth](users_files/configure_disable_eth.sh) - configure to disable ethernet (**shell**)
         * [configure_systemd_bootsplash](users_files/configure_systemd_bootsplash.sh) - set a custom logo (**shell**)
+        * [configure_usbotg](users_files/configure_usbotg.sh) - configure USB-OTG device
     * i.mx6:
         * [install_bin_imx_gpu](users_files/imx/install_bin_imx_gpu.sh) - install GPU support on i.mx6-based SoM (**binaries**)
         * [install_cc_imx_gst](users_files/imx/install_cc_imx_gst.sh) - install GStreamer 1.0 plugins with VPU/GPU acceleration on i.mx6-based SoM (**cross-compilation**)
