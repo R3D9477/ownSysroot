@@ -56,3 +56,7 @@ System for sysroot building written on pure Bash.
         * [install_socat](users_files/install_deb_socat.sh) - install utility 'socat' (**binaries**)
         * [install_xml2](users_files/install_deb_xml2.sh) - install library 'xml2' (**binaries**)
 
+---
+
+### If you like that repo, you can support me, I'm really appreciate it :heart:
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R3D9477)
